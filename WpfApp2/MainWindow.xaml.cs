@@ -26,7 +26,7 @@ namespace WpfApp2
 
 
             // Initialize the camera
-            camera = new PerspectiveCamera(new Point3D(0, 0, 5), new Vector3D(0, 0, -1), new Vector3D(0, 1, 0), 45);
+            camera = new PerspectiveCamera(new Point3D(0, 0, 5), new Vector3D(0, 0, -1), new Vector3D(0, 1, 0), 90);
             viewport.Camera = camera;
 
             // Attach the KeyDown event handler
@@ -158,9 +158,6 @@ namespace WpfApp2
                 Point currentMousePos = e.GetPosition(this);
                 Vector mouseDelta = currentMousePos - lastMousePosition;
 
-                // Adjust camera position based on mouse delta
-                Vector3D cameraMove = new Vector3D(mouseDelta.X * CAMERA_MOVE_SPEED, 0, -mouseDelta.Y * CAMERA_MOVE_SPEED);
-                camera.Position += camera.Transform.Transform(cameraMove);
 
                 lastMousePosition = currentMousePos;
                 Matrix3D rotationMatrix = new Matrix3D();
