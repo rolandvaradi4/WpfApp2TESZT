@@ -152,9 +152,8 @@ namespace WpfApp2
 
 
         private void GameViewport_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
+        { 
+            
                 Point currentMousePos = e.GetPosition(this);
                 Vector mouseDelta = currentMousePos - lastMousePosition;
 
@@ -172,7 +171,7 @@ namespace WpfApp2
                 camera.LookDirection = rotationMatrix.Transform(camera.LookDirection);
                 camera.UpDirection = rotationMatrix.Transform(camera.UpDirection);
 
-            }
+            
         }
 
         private void GameViewport_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
