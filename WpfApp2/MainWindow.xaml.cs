@@ -115,7 +115,7 @@ namespace WpfApp2
                 // Increase the current speed up to the maximum speed
                 if (current_speed < CAMERA_MOVE_SPEED)
                 {
-                    current_speed += CameraAcceleration;
+                    current_speed += CAMERA_ACCELERATION;
                 }
 
                 // Use the dispatcher to update the camera on the UI thread
