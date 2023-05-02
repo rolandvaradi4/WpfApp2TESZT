@@ -29,7 +29,6 @@ namespace WpfApp2
 
         // Define camera properties
         private PerspectiveCamera camera;
-        private double moveSpeed = 0.1;
         private Point lastMousePosition;
 
         public MainWindow()
@@ -50,7 +49,7 @@ namespace WpfApp2
             viewport.MouseLeftButtonUp += GameViewport_MouseLeftButtonUp;
             Keyboard.Focus(this);
             KeyDown += MainWindow_KeyDown;
-           
+
         }
 
         private async void MainWindow_KeyDown(object sender, KeyEventArgs e)
@@ -69,8 +68,41 @@ namespace WpfApp2
                 case Key.D:
                     await MoveCameraAsync(Key.D);
                     break;
+                case Key.Up:
+                    await RotateCameraAsync(-CameraRotateSpeed, Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), Key.Up);
+                    break;
+                case Key.Down:
+                    await RotateCameraAsync(CameraRotateSpeed, Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), Key.Down);
+                    break;
+                case Key.Left:
+                    await RotateCameraAsync(CameraRotateSpeed, camera.UpDirection, Key.Left);
+                    break;
+                case Key.Right:
+                    await RotateCameraAsync(-CameraRotateSpeed, camera.UpDirection, Key.Right);
+                    break;
             }
         }
+        private async Task RotateCameraAsync(double angle, Vector3D axis, Key key)
+        {
+            while (Keyboard.IsKeyDown(key))
+            {
+                await Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Matrix3D matrix = new Matrix3D();
+
+                matrix.Rotate(new Quaternion(axis, angle));
+
+                // Rotate the camera's look direction and up direction
+                camera.LookDirection = matrix.Transform(camera.LookDirection);
+                camera.UpDirection = matrix.Transform(camera.UpDirection);
+
+
+            }));
+                await Task.Delay(20);
+            }
+        }
+
+
 
         private async Task MoveCameraAsync(Key key)
         {
@@ -136,4 +168,5 @@ namespace WpfApp2
             viewport.ReleaseMouseCapture();
         }
     }
+
 }
