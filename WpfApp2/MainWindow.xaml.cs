@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -57,47 +59,52 @@ namespace WpfApp2
             switch (e.Key)
             {
                 case Key.W:
-                    await MoveCameraAsync(Key.W);
+                    await MoveCameraAsync(Key.W); // Move the camera forward when W is pressed
                     break;
                 case Key.A:
-                    await MoveCameraAsync(Key.A);
+                    await MoveCameraAsync(Key.A); // Move the camera left when A is pressed
                     break;
                 case Key.S:
-                    await MoveCameraAsync(Key.S);
+                    await MoveCameraAsync(Key.S); // Move the camera backward when S is pressed
                     break;
                 case Key.D:
-                    await MoveCameraAsync(Key.D);
+                    await MoveCameraAsync(Key.D); // Move the camera right when D is pressed
                     break;
                 case Key.Up:
-                    await RotateCameraAsync(-CameraRotateSpeed, Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), Key.Up);
+                    await RotateCameraAsync(-CameraRotateSpeed, Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), Key.Up); // Rotate the camera up when the up arrow key is pressed
                     break;
                 case Key.Down:
-                    await RotateCameraAsync(CameraRotateSpeed, Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), Key.Down);
+                    await RotateCameraAsync(CameraRotateSpeed, Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), Key.Down); // Rotate the camera down when the down arrow key is pressed
                     break;
                 case Key.Left:
-                    await RotateCameraAsync(CameraRotateSpeed, camera.UpDirection, Key.Left);
+                    await RotateCameraAsync(CameraRotateSpeed, camera.UpDirection, Key.Left); // Rotate the camera left when the left arrow key is pressed
                     break;
                 case Key.Right:
-                    await RotateCameraAsync(-CameraRotateSpeed, camera.UpDirection, Key.Right);
+                    await RotateCameraAsync(-CameraRotateSpeed, camera.UpDirection, Key.Right); // Rotate the camera right when the right arrow key is pressed
                     break;
             }
         }
         private async Task RotateCameraAsync(double angle, Vector3D axis, Key key)
         {
+            // Keep rotating the camera while the key is held down
             while (Keyboard.IsKeyDown(key))
             {
+                // Use the dispatcher to update the camera on the UI thread
                 await Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-            {
-                Matrix3D matrix = new Matrix3D();
+                {
+                    // Create a new 3D matrix to represent the rotation
+                    Matrix3D matrix = new Matrix3D();
 
-                matrix.Rotate(new Quaternion(axis, angle));
+                    // Rotate the matrix by the specified angle around the specified axis
+                    matrix.Rotate(new Quaternion(axis, angle));
 
-                // Rotate the camera's look direction and up direction
-                camera.LookDirection = matrix.Transform(camera.LookDirection);
-                camera.UpDirection = matrix.Transform(camera.UpDirection);
+                    // Use the matrix to rotate the camera's look direction and up direction
+                    camera.LookDirection = matrix.Transform(camera.LookDirection);
+                    camera.UpDirection = matrix.Transform(camera.UpDirection);
 
+                }));
 
-            }));
+                // Wait for a short period of time to allow the camera to rotate smoothly
                 await Task.Delay(20);
             }
         }
@@ -106,16 +113,22 @@ namespace WpfApp2
 
         private async Task MoveCameraAsync(Key key)
         {
+            // Set the current speed to zero initially
             double current_speed = 0;
+
+            // Keep moving the camera while the key is held down
             while (Keyboard.IsKeyDown(key))
             {
+                // Increase the current speed up to the maximum speed
                 if (current_speed < CameraMoveSpeed)
                 {
                     current_speed += CameraAcceleration;
                 }
 
+                // Use the dispatcher to update the camera on the UI thread
                 await Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
+                    // Move the camera in the specified direction by the current speed
                     switch (key)
                     {
                         case Key.W:
@@ -133,6 +146,7 @@ namespace WpfApp2
                     }
                 }));
 
+                // Wait for a short period of time to allow the camera to move smoothly
                 await Task.Delay(20);
             }
         }
