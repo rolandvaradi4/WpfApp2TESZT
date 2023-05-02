@@ -12,9 +12,9 @@ namespace WpfApp2
     public partial class MainWindow : Window
     {
         // Define camera movement speed
-        private const double CameraMoveSpeed = 0.005;
-        private const double CameraRotateSpeed = 0.1;
-        private const double CameraAcceleration = 0.0001;
+        private const double CAMERA_MOVE_SPEED = 0.005;
+        private const double CAMERA_ROTATE_SPEED = 0.1;
+        private const double CAMERA_ACCELERATION = 0.0001;
 
         // Define camera properties
         private PerspectiveCamera camera;
@@ -64,16 +64,16 @@ namespace WpfApp2
                     await MoveCameraAsync(Key.LeftCtrl); // Move the camera down when Left Control is pressed
                     break;
                 case Key.Up:
-                    await RotateCameraAsync(-CameraRotateSpeed, Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), Key.Up); // Rotate the camera up when the up arrow key is pressed
+                    await RotateCameraAsync(-CAMERA_ROTATE_SPEED, Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), Key.Up); // Rotate the camera up when the up arrow key is pressed
                     break;
                 case Key.Down:
-                    await RotateCameraAsync(CameraRotateSpeed, Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), Key.Down); // Rotate the camera down when the down arrow key is pressed
+                    await RotateCameraAsync(CAMERA_ROTATE_SPEED, Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), Key.Down); // Rotate the camera down when the down arrow key is pressed
                     break;
                 case Key.Left:
-                    await RotateCameraAsync(CameraRotateSpeed, camera.UpDirection, Key.Left); // Rotate the camera left when the left arrow key is pressed
+                    await RotateCameraAsync(CAMERA_ROTATE_SPEED, camera.UpDirection, Key.Left); // Rotate the camera left when the left arrow key is pressed
                     break;
                 case Key.Right:
-                    await RotateCameraAsync(-CameraRotateSpeed, camera.UpDirection, Key.Right); // Rotate the camera right when the right arrow key is pressed
+                    await RotateCameraAsync(-CAMERA_ROTATE_SPEED, camera.UpDirection, Key.Right); // Rotate the camera right when the right arrow key is pressed
                     break;
             }
         }
@@ -113,7 +113,7 @@ namespace WpfApp2
             while (Keyboard.IsKeyDown(key))
             {
                 // Increase the current speed up to the maximum speed
-                if (current_speed < CameraMoveSpeed)
+                if (current_speed < CAMERA_MOVE_SPEED)
                 {
                     current_speed += CameraAcceleration;
                 }
@@ -159,17 +159,17 @@ namespace WpfApp2
                 Vector mouseDelta = currentMousePos - lastMousePosition;
 
                 // Adjust camera position based on mouse delta
-                Vector3D cameraMove = new Vector3D(mouseDelta.X * CameraMoveSpeed, 0, -mouseDelta.Y * CameraMoveSpeed);
+                Vector3D cameraMove = new Vector3D(mouseDelta.X * CAMERA_MOVE_SPEED, 0, -mouseDelta.Y * CAMERA_MOVE_SPEED);
                 camera.Position += camera.Transform.Transform(cameraMove);
 
                 lastMousePosition = currentMousePos;
                 Matrix3D rotationMatrix = new Matrix3D();
 
                 // Rotate around the up vector (yaw)
-                rotationMatrix.Rotate(new Quaternion(camera.UpDirection, -mouseDelta.X * CameraRotateSpeed));
+                rotationMatrix.Rotate(new Quaternion(camera.UpDirection, -mouseDelta.X * CAMERA_ROTATE_SPEED));
 
                 // Rotate around the right vector (pitch)
-                rotationMatrix.Rotate(new Quaternion(Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), -mouseDelta.Y * CameraRotateSpeed));
+                rotationMatrix.Rotate(new Quaternion(Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), -mouseDelta.Y * CAMERA_ROTATE_SPEED));
 
                 // Apply the rotation matrix to the camera's LookDirection and UpDirection vectors
                 camera.LookDirection = rotationMatrix.Transform(camera.LookDirection);
