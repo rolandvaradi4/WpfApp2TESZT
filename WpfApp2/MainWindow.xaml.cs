@@ -25,9 +25,9 @@ namespace WpfApp2
     public partial class MainWindow : Window
     {
         // Define camera movement speed
-        private const double CameraMoveSpeed = 0.05;
-        private const double CameraRotateSpeed = 0.2;
-        private const double CameraAcceleration = 0.001;
+        private const double CameraMoveSpeed = 0.005;
+        private const double CameraRotateSpeed = 0.1;
+        private const double CameraAcceleration = 0.0001;
 
         // Define camera properties
         private PerspectiveCamera camera;
@@ -69,6 +69,12 @@ namespace WpfApp2
                     break;
                 case Key.D:
                     await MoveCameraAsync(Key.D); // Move the camera right when D is pressed
+                    break;
+                case Key.Space:
+                    await MoveCameraAsync(Key.Space); // Move the camera up when Space is pressed
+                    break;
+                case Key.LeftCtrl:
+                    await MoveCameraAsync(Key.LeftCtrl); // Move the camera down when Left Control is pressed
                     break;
                 case Key.Up:
                     await RotateCameraAsync(-CameraRotateSpeed, Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), Key.Up); // Rotate the camera up when the up arrow key is pressed
@@ -142,6 +148,12 @@ namespace WpfApp2
                             break;
                         case Key.D:
                             camera.Position += Vector3D.CrossProduct(camera.LookDirection, camera.UpDirection) * current_speed;
+                            break;
+                        case Key.Space:
+                            camera.Position += camera.UpDirection * current_speed;
+                            break;
+                        case Key.LeftCtrl:
+                            camera.Position += -camera.UpDirection * current_speed;
                             break;
                     }
                 }));
