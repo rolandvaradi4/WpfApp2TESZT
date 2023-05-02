@@ -176,6 +176,18 @@ namespace WpfApp2
                 camera.Position += camera.Transform.Transform(cameraMove);
 
                 lastMousePosition = currentMousePos;
+                Matrix3D rotationMatrix = new Matrix3D();
+
+                // Rotate around the up vector (yaw)
+                rotationMatrix.Rotate(new Quaternion(camera.UpDirection, -mouseDelta.X * CameraRotateSpeed));
+
+                // Rotate around the right vector (pitch)
+                rotationMatrix.Rotate(new Quaternion(Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), -mouseDelta.Y * CameraRotateSpeed));
+
+                // Apply the rotation matrix to the camera's LookDirection and UpDirection vectors
+                camera.LookDirection = rotationMatrix.Transform(camera.LookDirection);
+                camera.UpDirection = rotationMatrix.Transform(camera.UpDirection);
+
             }
         }
 
