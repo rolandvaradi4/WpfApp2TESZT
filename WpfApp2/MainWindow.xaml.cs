@@ -33,9 +33,9 @@ namespace WpfApp2
             KeyDown += MainWindow_KeyDown;
 
             // Hook up event handlers for mouse and keyboard input
-            viewport.MouseMove += GameViewport_MouseMove;
-            viewport.MouseLeftButtonDown += GameViewport_MouseLeftButtonDown;
-            viewport.MouseLeftButtonUp += GameViewport_MouseLeftButtonUp;
+            this.MouseMove += GameViewport_MouseMove;
+            this.MouseLeftButtonDown += GameViewport_MouseLeftButtonDown;
+            this.MouseLeftButtonUp += GameViewport_MouseLeftButtonUp;
             Keyboard.Focus(this);
             KeyDown += MainWindow_KeyDown;
 
@@ -155,7 +155,7 @@ namespace WpfApp2
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                Point currentMousePos = e.GetPosition(viewport);
+                Point currentMousePos = e.GetPosition(this);
                 Vector mouseDelta = currentMousePos - lastMousePosition;
 
                 // Adjust camera position based on mouse delta
@@ -169,7 +169,7 @@ namespace WpfApp2
                 rotationMatrix.Rotate(new Quaternion(camera.UpDirection, -mouseDelta.X * CAMERA_ROTATE_SPEED));
 
                 // Rotate around the right vector (pitch)
-                rotationMatrix.Rotate(new Quaternion(Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), -mouseDelta.Y * CAMERA_ROTATE_SPEED));
+                rotationMatrix.Rotate(new Quaternion(Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), mouseDelta.Y * CAMERA_ROTATE_SPEED));
 
                 // Apply the rotation matrix to the camera's LookDirection and UpDirection vectors
                 camera.LookDirection = rotationMatrix.Transform(camera.LookDirection);
@@ -180,17 +180,16 @@ namespace WpfApp2
 
         private void GameViewport_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // Capture the mouse to handle dragging
-            viewport.CaptureMouse();
+            
 
             // Save the current mouse position
-            lastMousePosition = e.GetPosition(viewport);
+            lastMousePosition = e.GetPosition(this);
         }
 
         private void GameViewport_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            // Release the mouse capture
-            viewport.ReleaseMouseCapture();
+            // Save the current mouse position
+            lastMousePosition = e.GetPosition(this);
         }
     }
 
