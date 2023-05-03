@@ -29,8 +29,8 @@ namespace WpfApp2
                 InitializeComponent();
             ModelVisual3D model = new ModelVisual3D();
             ModelImporter importer = new ModelImporter();
-            Model3DGroup modelGroup = importer.Load("D:\\4.feleves\\wpf\\New folder\\WpfApp2TESZT\\WpfApp2\\PineTree.obj");
-            model.Content = modelGroup;
+      //      Model3DGroup modelGroup = importer.Load("D:\\4.feleves\\wpf\\New folder\\WpfApp2TESZT\\WpfApp2\\PineTree.obj");
+      //      model.Content = modelGroup;
 
             // Add the ModelVisual3D object to the Viewport3D
             viewport.Children.Add(model);
@@ -52,42 +52,45 @@ namespace WpfApp2
 
             }
 
-            private async void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        private async void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
             {
-                switch (e.Key)
-                {
-                    case Key.W:
-                        await MoveCameraAsync(Key.W); // Move the camera forward when W is pressed
-                        break;
-                    case Key.A:
-                        await MoveCameraAsync(Key.A); // Move the camera left when A is pressed
-                        break;
-                    case Key.S:
-                        await MoveCameraAsync(Key.S); // Move the camera backward when S is pressed
-                        break;
-                    case Key.D:
-                        await MoveCameraAsync(Key.D); // Move the camera right when D is pressed
-                        break;
-                    case Key.Space:
-                        await MoveCameraAsync(Key.Space); // Move the camera up when Space is pressed
-                        break;
-                    case Key.LeftCtrl:
-                        await MoveCameraAsync(Key.LeftCtrl); // Move the camera down when Left Control is pressed
-                        break;
-                    case Key.Up:
-                        await RotateCameraAsync(-CAMERA_ROTATE_SPEED, Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), Key.Up); // Rotate the camera up when the up arrow key is pressed
-                        break;
-                    case Key.Down:
-                        await RotateCameraAsync(CAMERA_ROTATE_SPEED, Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), Key.Down); // Rotate the camera down when the down arrow key is pressed
-                        break;
-                    case Key.Left:
-                        await RotateCameraAsync(CAMERA_ROTATE_SPEED, camera.UpDirection, Key.Left); // Rotate the camera left when the left arrow key is pressed
-                        break;
-                    case Key.Right:
-                        await RotateCameraAsync(-CAMERA_ROTATE_SPEED, camera.UpDirection, Key.Right); // Rotate the camera right when the right arrow key is pressed
-                        break;
-                }
+                case Key.Escape:
+                    this.Close();
+                    break;
+                case Key.W:
+                    await MoveCameraAsync(Key.W); // Move the camera forward when W is pressed
+                    break;
+                case Key.A:
+                    await MoveCameraAsync(Key.A); // Move the camera left when A is pressed
+                    break;
+                case Key.S:
+                    await MoveCameraAsync(Key.S); // Move the camera backward when S is pressed
+                    break;
+                case Key.D:
+                    await MoveCameraAsync(Key.D); // Move the camera right when D is pressed
+                    break;
+                case Key.Space:
+                    await MoveCameraAsync(Key.Space); // Move the camera up when Space is pressed
+                    break;
+                case Key.LeftCtrl:
+                    await MoveCameraAsync(Key.LeftCtrl); // Move the camera down when Left Control is pressed
+                    break;
+                case Key.Up:
+                    await RotateCameraAsync(-CAMERA_ROTATE_SPEED, Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), Key.Up); // Rotate the camera up when the up arrow key is pressed
+                    break;
+                case Key.Down:
+                    await RotateCameraAsync(CAMERA_ROTATE_SPEED, Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), Key.Down); // Rotate the camera down when the down arrow key is pressed
+                    break;
+                case Key.Left:
+                    await RotateCameraAsync(CAMERA_ROTATE_SPEED, camera.UpDirection, Key.Left); // Rotate the camera left when the left arrow key is pressed
+                    break;
+                case Key.Right:
+                    await RotateCameraAsync(-CAMERA_ROTATE_SPEED, camera.UpDirection, Key.Right); // Rotate the camera right when the right arrow key is pressed
+                    break;
             }
+        }
             private async Task RotateCameraAsync(double angle, Vector3D axis, Key key)
             {
                 // Keep rotating the camera while the key is held down
