@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Media3D;
+using HelixToolkit.Wpf;
 
 namespace WpfApp2
 {
@@ -26,10 +27,17 @@ namespace WpfApp2
             public MainWindow()
             {
                 InitializeComponent();
+            ModelVisual3D model = new ModelVisual3D();
+            ModelImporter importer = new ModelImporter();
+            Model3DGroup modelGroup = importer.Load("D:\\4.feleves\\wpf\\New folder\\WpfApp2TESZT\\WpfApp2\\PineTree.obj");
+            model.Content = modelGroup;
+
+            // Add the ModelVisual3D object to the Viewport3D
+            viewport.Children.Add(model);
 
 
-                // Initialize the camera
-                camera = new PerspectiveCamera(new Point3D(0, 0, 5), new Vector3D(0, 0, -1), new Vector3D(0, 1, 0), 90);
+            // Initialize the camera
+            camera = new PerspectiveCamera(new Point3D(0, 0, 5), new Vector3D(0, 0, -1), new Vector3D(0, 1, 0), 90);
                 viewport.Camera = camera;
 
                 // Attach the KeyDown event handler
@@ -150,8 +158,7 @@ namespace WpfApp2
                 }
             }
 
-        private bool isCursorCentered = false;
-        private bool shouldRotate = true;
+      
         private void GameViewport_MouseMove(object sender, MouseEventArgs e)
         {
             Point currentMousePos = e.GetPosition(this);
