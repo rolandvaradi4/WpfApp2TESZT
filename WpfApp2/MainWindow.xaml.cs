@@ -29,7 +29,7 @@ namespace WpfApp2
                 InitializeComponent();
             ModelVisual3D model = new ModelVisual3D();
             ModelImporter importer = new ModelImporter();
-            Model3DGroup modelGroup = importer.Load("D:\\4.feleves\\wpf\\New folder\\WpfApp2TESZT\\WpfApp2\\PineTree.obj");
+            Model3DGroup modelGroup = importer.Load("D:\\4.feleves\\wpf\\New folder\\WpfApp2TESZT\\WpfApp2\\Kylo Ren Skin (Leaked).obj");
             model.Content = modelGroup;
 
             // Add the ModelVisual3D object to the Viewport3D
