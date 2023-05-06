@@ -30,10 +30,16 @@ namespace WpfApp2
             {
                 InitializeComponent();
             cube cubes = new cube();
-            
+            var map = new map(100);
+
+            // add the cubes to the viewport
+            foreach (var cube in map.Cubes)
+            {
+                viewport.Children.Add(cube);
+            }
 
             // Add the cube to the viewport
-            viewport.Children.Add(cubes.Cube());
+            
 
 
             // Initialize the camera
