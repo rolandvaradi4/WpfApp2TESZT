@@ -29,11 +29,11 @@ namespace WpfApp2
             public MainWindow()
             {
                 InitializeComponent();
-            cube cubes = new cube();
-            var map = new map(100);
+            
+            var myMap = new map(10, 10, 10);
 
             // add the cubes to the viewport
-            foreach (var cube in map.Cubes)
+            foreach (var cube in myMap.Cubes)
             {
                 viewport.Children.Add(cube);
             }

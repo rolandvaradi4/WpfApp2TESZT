@@ -11,13 +11,19 @@ namespace WpfApp2
     {
         private readonly List<ModelVisual3D> _cubes = new List<ModelVisual3D>();
 
-        public map(int numCubes)
+        public map(int sizeX, int sizeY, int sizeZ)
         {
-            for (int i = 0; i < numCubes; i++)
+            for (int x = 0; x < sizeX; x++)
             {
-                var cube = new cube().Cube();
-                cube.Transform = new TranslateTransform3D(i, 0, 0);
-                _cubes.Add(cube);
+                for (int y = 0; y < sizeY; y++)
+                {
+                    for (int z = 0; z < sizeZ; z++)
+                    {
+                        var cube = new cube().Cube();
+                        cube.Transform = new TranslateTransform3D(x, y, z);
+                        _cubes.Add(cube);
+                    }
+                }
             }
         }
 
