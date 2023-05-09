@@ -16,7 +16,7 @@ namespace WpfApp2
         public ModelVisual3D Cube()
         {
             // Create the cube mesh
-            BitmapImage textureImage = new BitmapImage(new Uri("D:\\4.feleves\\wpf\\teszt2\\WpfApp2TESZT\\WpfApp2\\wildgrass_2_ur_1024.png", UriKind.Relative));
+            BitmapImage textureImage = new BitmapImage(new Uri("wildgrass_2_ur_1024.png", UriKind.Relative));
             MeshGeometry3D mesh = new MeshGeometry3D();
             mesh.Positions = new Point3DCollection(new Point3D[]
             {
