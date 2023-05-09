@@ -20,14 +20,14 @@ namespace WpfApp2
             MeshGeometry3D mesh = new MeshGeometry3D();
             mesh.Positions = new Point3DCollection(new Point3D[]
             {
-                new Point3D(-1, -1, 1),
-                new Point3D(1, -1, 1),
-                new Point3D(1, 1, 1),
-                new Point3D(-1, 1, 1),
-                new Point3D(-1, -1, -1),
-                new Point3D(1, -1, -1),
-                new Point3D(1, 1, -1),
-                new Point3D(-1, 1, -1)
+                new Point3D(-0.5, -0.5, 0.5),
+                new Point3D(0.5, -0.5, 0.5),
+                new Point3D(0.5, 0.5, 0.5),
+                new Point3D(-0.5, 0.5, 0.5),
+                new Point3D(-0.5, -0.5, -0.5),
+                new Point3D(0.5, -0.5, -0.5),
+                new Point3D(0.5, 0.5, -0.5),
+                new Point3D(-0.5, 0.5, -0.5)
             });
             mesh.TriangleIndices = new Int32Collection(new int[]
             {

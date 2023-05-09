@@ -8,6 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="wildgrass_2_ur_1024.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wildgrass_2_ur_1024.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="HelixToolkit.Wpf" Version="2.23.0" />
   </ItemGroup>
 

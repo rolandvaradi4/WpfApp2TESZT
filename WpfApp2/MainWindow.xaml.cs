@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,33 +20,32 @@ namespace WpfApp2
         // Define camera movement speed
         private const double CAMERA_MOVE_SPEED = 0.005;
         private const double CAMERA_ROTATE_SPEED = 0.1;
-        private const double CAMERA_ACCELERATION = 0.001;
+        private const double CAMERA_ACCELERATION = 0.0001;
 
         // Define camera properties
         private PerspectiveCamera camera;
         private Point lastMousePosition;
-        List<Rect3D> cubeBoundingBoxes = new List<Rect3D>();
+
         public MainWindow()
         {
             InitializeComponent();
-            foreach (ModelVisual3D test in viewport.Children)
-            {
-                Rect3D boundingBox = test.Content.Bounds;
-                cubeBoundingBoxes.Add(boundingBox);
-            }
-            BitmapImage textureImage = new BitmapImage(new Uri("D:\\4.feleves\\wpf\\teszt2\\WpfApp2TESZT\\WpfApp2\\wildgrass_2_ur_1024.png", UriKind.Relative));
-            ImageBrush image = new ImageBrush(textureImage);
-            var myMap = new map(50, 50, image);
-            var modelVisual = new ModelVisual3D();
-            modelVisual.Content = myMap.CubeInstances;
-            viewport.Children.Add(modelVisual);
-            // Initialize the camera
-            camera = new PerspectiveCamera(new Point3D(0, 1, 5), new Vector3D(0, -1, -1), new Vector3D(0, 1, 0), 90);
-            viewport.Camera = camera;
-            
-           
 
-   
+            var myMap = new map(10, 10, 10);
+
+            // add the cubes to the viewport
+            foreach (var cube in myMap.Cubes)
+            {
+                viewport.Children.Add(cube);
+            }
+
+            // Add the cube to the viewport
+
+
+
+            // Initialize the camera
+            camera = new PerspectiveCamera(new Point3D(1, 10, 1), new Vector3D(0, 0, 1), new Vector3D(0, 20, 0), 90);
+            viewport.Camera = camera;
+
             // Attach the KeyDown event handler
             KeyDown += MainWindow_KeyDown;
 
@@ -188,9 +186,8 @@ namespace WpfApp2
             rotationMatrix.Rotate(new Quaternion(Vector3D.CrossProduct(camera.UpDirection, camera.LookDirection), mouseDelta.Y * CAMERA_ROTATE_SPEED));
             // Apply the rotation matrix to the camera's LookDirection and UpDirection vectors
             camera.LookDirection = rotationMatrix.Transform(camera.LookDirection);
-            MousePositionTextBlock.Text = viewport.Camera.GetInfo().ToString();
-          
-            
+
+            MousePositionTextBlock.Text = camera.GetInfo().ToString();
         }
 
 
