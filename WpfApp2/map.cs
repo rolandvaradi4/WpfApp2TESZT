@@ -4,29 +4,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
+using System.Windows.Media;
+using HelixToolkit.Wpf;
 
 namespace WpfApp2
 {
     public class map
     {
-        private readonly List<ModelVisual3D> _cubes = new List<ModelVisual3D>();
+        private readonly Model3DGroup _cubeInstances = new Model3DGroup();
+        private readonly int _numCubesX;
+        private readonly int _numCubesZ;
 
-        public map(int sizeX, int sizeY, int sizeZ)
+        public map(int numCubesX, int numCubesZ, ImageBrush texture)
         {
-            for (int x = 0; x < sizeX; x++)
+            _numCubesX = numCubesX;
+            _numCubesZ = numCubesZ;
+
+            // Create a material for the cube
+            var material = new DiffuseMaterial(texture);
+
+            // Create the instance transforms
+            var transforms = new List<Transform3D>();
+            for (int x = 0; x < numCubesX; x++)
             {
-                for (int y = 0; y < sizeY; y++)
-                {
-                    for (int z = 0; z < sizeZ; z++)
+                    for (int z = 0; z < numCubesZ; z++)
                     {
-                        var cube = new cube().Cube();
-                        cube.Transform = new TranslateTransform3D(x, y, z);
-                        _cubes.Add(cube);
+                        var meshBuilder = new MeshBuilder();
+                        meshBuilder.AddBox(new Point3D(0, 0, 0), 1, 1, 1);
+                        var geometry = meshBuilder.ToMesh();
+                        var cubeVisual = new GeometryModel3D(geometry, material);
+                        cubeVisual.Transform = new TranslateTransform3D(x, 0, z);
+                        _cubeInstances.Children.Add(cubeVisual);
                     }
-                }
             }
         }
 
-        public List<ModelVisual3D> Cubes => _cubes;
+        public Model3DGroup CubeInstances => _cubeInstances;
     }
 }
