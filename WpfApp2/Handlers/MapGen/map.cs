@@ -12,14 +12,9 @@ namespace WpfApp2.Handlers.MapGen
     public class map
     {
         private readonly Model3DGroup _cubeInstances = new Model3DGroup();
-        private readonly int _numCubesX;
-        private readonly int _numCubesZ;
 
         public map(int numCubesX, int numCubesZ, ImageBrush texture)
         {
-            _numCubesX = numCubesX;
-            _numCubesZ = numCubesZ;
-
             // Create a material for the cube
             var material = new DiffuseMaterial(texture);
 
