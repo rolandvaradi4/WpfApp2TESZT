@@ -23,7 +23,7 @@ namespace WpfApp2
     {
 
         private CameraHandlers cameraHandler;
-        List<Rect3D> cubeBoundingBoxes = new List<Rect3D>();
+      
         private readonly MapChunk mapChunk = new MapChunk();
         private Point3D currentPosition;
         public MainWindow()
