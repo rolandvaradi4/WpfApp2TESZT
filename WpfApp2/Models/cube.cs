@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
+using WpfApp2.Config;
 using WpfApp2.Models.Textures;
 
 namespace WpfApp2.Models
