@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <Folder Include="3dmodel\" />
-    <Folder Include="Handlers\Movement\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -22,10 +22,7 @@ namespace WpfApp2
     public partial class MainWindow : Window
     {
 
-
-
-        // Define camera properties
-        private Point lastMousePosition;
+        private CameraHandlers cameraHandler;
         List<Rect3D> cubeBoundingBoxes = new List<Rect3D>();
         public MainWindow()
         {
@@ -47,18 +44,24 @@ namespace WpfApp2
             // Access the PLAYER_CAMERA from the Globals class
             PerspectiveCamera playerCamera = Globals.PLAYER_CAMERA;
             viewport.Camera = playerCamera;
-            CameraHandlers cameraHandler = new CameraHandlers(this);
+            cameraHandler = new CameraHandlers(this);
 
 
 
-            // Attach the KeyDown event handler
-            KeyDown += cameraHandler.MainWindow_KeyDown;
+            
 
-            // Hook up event handlers for mouse and keyboard input
-            this.MouseMove += cameraHandler.GameViewport_MouseMove;
+            
+            
             Keyboard.Focus(this);
-            KeyDown += cameraHandler.MainWindow_KeyDown;
+            HookUpEvents();
 
+        }
+
+        public void HookUpEvents()
+        {
+            KeyDown += cameraHandler.MainWindow_KeyDown;
+            MouseMove += cameraHandler.GameViewport_MouseMove;
+            KeyDown += cameraHandler.MainWindow_KeyDown;
         }
 
 

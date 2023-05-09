@@ -96,6 +96,9 @@ namespace WpfApp2.Handlers.Camera
                     // Move the camera in the specified direction by the current speed
                     switch (key)
                     {
+                        case Key.Escape:
+                            mainWindow.Close();
+                            break;
                         case Key.W:
                             playerCamera.Position += playerCamera.LookDirection * current_speed;
                             break;
