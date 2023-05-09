@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
+using WpfApp2.Config;
 using WpfApp2.Models.Textures;
 
 namespace WpfApp2.Models
@@ -17,7 +18,7 @@ namespace WpfApp2.Models
         public ModelVisual3D Cube()
         {
             // Create the cube mesh
-            BitmapImage textureImage = new BitmapImage(new Uri("D:\\4.feleves\\wpf\\teszt2\\WpfApp2TESZT\\WpfApp2\\Models\\Textures\\grass.png", UriKind.Relative));
+            BitmapImage textureImage = TextureID.Grass;
             MeshGeometry3D mesh = new MeshGeometry3D();
             mesh.Positions = new Point3DCollection(new Point3D[]
             {
