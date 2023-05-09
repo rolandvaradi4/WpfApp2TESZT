@@ -12,6 +12,6 @@ namespace WpfApp2.Models.Textures
 
         public static BitmapImage Grass = new BitmapImage(new Uri("pack://application:,,,/Models/Textures/wildgrass_2_ur_1024.png", UriKind.RelativeOrAbsolute));
 
-
+        //alma
     }
 }
