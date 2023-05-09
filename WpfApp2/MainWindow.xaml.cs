@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
+using WpfApp2.Models.Textures;
 
 namespace WpfApp2
 {
@@ -35,7 +36,7 @@ namespace WpfApp2
                 Rect3D boundingBox = test.Content.Bounds;
                 cubeBoundingBoxes.Add(boundingBox);
             }
-            BitmapImage textureImage = new BitmapImage(new Uri("D:\\4.feleves\\wpf\\teszt2\\WpfApp2TESZT\\WpfApp2\\wildgrass_2_ur_1024.png", UriKind.Relative));
+            BitmapImage textureImage = TextureID.Grass;
             ImageBrush image = new ImageBrush(textureImage);
             var myMap = new map(50, 50, image);
             var modelVisual = new ModelVisual3D();

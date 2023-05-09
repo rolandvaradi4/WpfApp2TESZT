@@ -8,11 +8,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="wildgrass_2_ur_1024.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="HelixToolkit.Wpf" Version="2.23.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="3dmodel\" />
+    <Folder Include="Handlers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Models\Textures\wildgrass_2_ur_1024.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
