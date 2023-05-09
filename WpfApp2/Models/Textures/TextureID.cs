@@ -10,7 +10,7 @@ namespace WpfApp2.Models.Textures
     public static class TextureID
     {
 
-        public static BitmapImage Grass = new BitmapImage(new Uri("pack://application:,,,/Models/Textures/grass.png", UriKind.RelativeOrAbsolute));
+        public static BitmapImage Grass = new BitmapImage(new Uri("pack://application:,,,/Models/Textures/grass.png", UriKind.Relative));
 
         
     }

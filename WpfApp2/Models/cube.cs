@@ -17,7 +17,7 @@ namespace WpfApp2.Models
         public ModelVisual3D Cube()
         {
             // Create the cube mesh
-            BitmapImage textureImage = TextureID.Grass;
+            BitmapImage textureImage = new BitmapImage(new Uri("D:\\4.feleves\\wpf\\teszt2\\WpfApp2TESZT\\WpfApp2\\Models\\Textures\\grass.png", UriKind.Relative));
             MeshGeometry3D mesh = new MeshGeometry3D();
             mesh.Positions = new Point3DCollection(new Point3D[]
             {
@@ -92,14 +92,6 @@ namespace WpfApp2.Models
                 new Vector3D(0, 0, -1)
             });
             GeometryModel3D model = new GeometryModel3D(mesh, new DiffuseMaterial(new ImageBrush(textureImage)));
-
-
-
-
-
-
-            // Create the cube visual
-            DiffuseMaterial material = new DiffuseMaterial(new SolidColorBrush(Colors.Red));
             ModelVisual3D visual = new ModelVisual3D();
             visual.Content = model;
             return visual;

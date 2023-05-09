@@ -17,7 +17,7 @@ namespace WpfApp2.Handlers.Camera
     {
         private MainWindow mainWindow;
         private Viewport3D viewport;
-        private PerspectiveCamera playerCamera;
+        public PerspectiveCamera playerCamera;
         private Point lastMousePosition;
 
         public CameraHandlers(MainWindow mainWindow)
@@ -50,6 +50,7 @@ namespace WpfApp2.Handlers.Camera
             rotationMatrix.Rotate(new Quaternion(Vector3D.CrossProduct(playerCamera.UpDirection, playerCamera.LookDirection), mouseDelta.Y * Globals.CAMERA_ROTATE_SPEED));
             // Apply the rotation matrix to the camera's LookDirection and UpDirection vectors
             playerCamera.LookDirection = rotationMatrix.Transform(playerCamera.LookDirection);
+            mainWindow.MousePositionTextBlock.Text = playerCamera.GetInfo().ToString();
 
 
         }
@@ -129,6 +130,7 @@ namespace WpfApp2.Handlers.Camera
             switch (e.Key)
             {
                 case Key.Escape:
+                    this.mainWindow.Close();
                     break;
                 case Key.W:
                     await MoveCameraAsync(Key.W); // Move the camera forward when W is pressed
