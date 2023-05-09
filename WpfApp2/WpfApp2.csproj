@@ -18,7 +18,6 @@
   <ItemGroup>
     <Folder Include="3dmodel\" />
     <Folder Include="Handlers\Movement\" />
-    <Folder Include="Handlers\Camera\" />
   </ItemGroup>
 
   <ItemGroup>
