@@ -7,7 +7,7 @@ using System.Windows.Media.Media3D;
 using System.Windows.Media;
 using HelixToolkit.Wpf;
 
-namespace WpfApp2
+namespace WpfApp2.Handlers.MapGen
 {
     public class map
     {
@@ -27,15 +27,15 @@ namespace WpfApp2
             var transforms = new List<Transform3D>();
             for (int x = 0; x < numCubesX; x++)
             {
-                    for (int z = 0; z < numCubesZ; z++)
-                    {
-                        var meshBuilder = new MeshBuilder();
-                        meshBuilder.AddBox(new Point3D(0, 0, 0), 1, 1, 1);
-                        var geometry = meshBuilder.ToMesh();
-                        var cubeVisual = new GeometryModel3D(geometry, material);
-                        cubeVisual.Transform = new TranslateTransform3D(x, 0, z);
-                        _cubeInstances.Children.Add(cubeVisual);
-                    }
+                for (int z = 0; z < numCubesZ; z++)
+                {
+                    var meshBuilder = new MeshBuilder();
+                    meshBuilder.AddBox(new Point3D(0, 0, 0), 1, 1, 1);
+                    var geometry = meshBuilder.ToMesh();
+                    var cubeVisual = new GeometryModel3D(geometry, material);
+                    cubeVisual.Transform = new TranslateTransform3D(x, 0, z);
+                    _cubeInstances.Children.Add(cubeVisual);
+                }
             }
         }
 
