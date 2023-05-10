@@ -16,7 +16,7 @@ namespace WpfApp2.Handlers.MapGen
         private readonly Model3DGroup _cubeInstances = new Model3DGroup();
         
 
-        public map(int numCubesX, int numCubesZ,int startnumCubesX,int starnumCubesY)
+        public map(int numCubesX, int numCubesY,int startnumCubesX,int startnumCubesY)
         {
             BitmapImage imagea = TextureID.Grass;
             ImageBrush texture = new ImageBrush(imagea);
@@ -25,9 +25,9 @@ namespace WpfApp2.Handlers.MapGen
 
             // Create the instance transforms
             var transforms = new List<Transform3D>();
-            for (int x = startnumCubesX; x < numCubesX; x++)
+            for (int x = startnumCubesX; x <  startnumCubesX + numCubesX; x++)
             {
-                for (int y = starnumCubesY; y < numCubesZ; y++)
+                for (int y = startnumCubesY; y < startnumCubesY + numCubesY; y++)
                 {
                     var meshBuilder = new MeshBuilder();
                     meshBuilder.AddBox(new Point3D(0, 0, 0), 1, 1, 1);
