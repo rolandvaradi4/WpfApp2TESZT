@@ -1,73 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
-using WpfApp2.Models;
+using WpfApp2.Handlers.Camera;
+using WpfApp2.Models.Textures;
 
-namespace WpfApp2
+namespace WpfApp2.Handlers.MapGen
 {
     public class MapChunk
     {
-        public readonly int chunkSize = 16;
-        private readonly int worldSize = 1;
-        private readonly int blockHeight = 1;
-        private readonly int maxHeight = 1;
-        private readonly Random random = new Random();
-        private readonly List<ModelVisual3D> models = new List<ModelVisual3D>();
+        private  Model3DGroup _cubeInstances = new Model3DGroup();
+        private readonly int _numCubesX;
+        private readonly int _numCubesY;
+     
+        private readonly map _map;
+        private readonly int _startnumCubesX;
+        private readonly int _starnumCubesY;
 
-        public List<ModelVisual3D> GenerateChunk(Point3D position)
+        public MapChunk(int numCubesX, int numCubesY,int startnumCubesX, int starnumCubesY)
         {
-            int xStart = (int)(position.X / chunkSize) * chunkSize;
-            int yStart = (int)(position.Y / chunkSize) * chunkSize;
-
-            for (int x = xStart; x < xStart + chunkSize; x++)
-            {
-                for (int y = yStart; y < yStart + chunkSize; y++)
-                {
-                    int height = (int)((Math.Sin(x / 10.0) + Math.Cos(y / 10.0)) * blockHeight) + maxHeight;
-                    
-                        var model = new cube().Cube();
-                        model.Transform = new TranslateTransform3D(x, y, 1);
-                        models.Add(model);
-                    
-                }
-            }
-
-            return models;
+            _numCubesX = numCubesX;
+            _numCubesY = numCubesY;
+         
+            _startnumCubesX = startnumCubesX;
+            _starnumCubesY = starnumCubesY;
+            _map = new map(_numCubesX, _numCubesY, _startnumCubesX, _starnumCubesY);
+            AddCubeInstances();
         }
 
-        public List<ModelVisual3D> UpdateChunk(Point3D position, Viewport3D viewport)
+        private void AddCubeInstances()
         {
-            int xStart = (int)(position.X / chunkSize) * chunkSize;
-            int yStart = (int)(position.Y / chunkSize) * chunkSize;
-
-            // Remove models from the scene
-            foreach (var model in models)
+            foreach (var child in _map.CubeInstances.Children)
             {
-                viewport.Children.Remove(model);
-            }
-            models.Clear();
-
-            // Generate new models
-            List<ModelVisual3D> newModels = GenerateChunk(position);
-
-            // Add new models to the scene
-            foreach (var model in newModels)
-            {
-                viewport.Children.Add(model);
+                _cubeInstances.Children.Add(child);
             }
 
-            return newModels;
         }
 
 
+        public Model3DGroup CubeInstances => _cubeInstances;
     }
 }

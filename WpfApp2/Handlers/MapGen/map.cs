@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using System.Windows.Media;
 using HelixToolkit.Wpf;
+using System.Windows.Media.Imaging;
+using WpfApp2.Models.Textures;
 
 namespace WpfApp2.Handlers.MapGen
 {
@@ -14,16 +16,18 @@ namespace WpfApp2.Handlers.MapGen
         private readonly Model3DGroup _cubeInstances = new Model3DGroup();
         
 
-        public map(int numCubesX, int numCubesZ, ImageBrush texture)
+        public map(int numCubesX, int numCubesZ,int startnumCubesX,int starnumCubesY)
         {
+            BitmapImage imagea = TextureID.Grass;
+            ImageBrush texture = new ImageBrush(imagea);
             // Create a material for the cube
             var material = new DiffuseMaterial(texture);
 
             // Create the instance transforms
             var transforms = new List<Transform3D>();
-            for (int x = 0; x < numCubesX; x++)
+            for (int x = startnumCubesX; x < numCubesX; x++)
             {
-                for (int y = 0; y < numCubesZ; y++)
+                for (int y = starnumCubesY; y < numCubesZ; y++)
                 {
                     var meshBuilder = new MeshBuilder();
                     meshBuilder.AddBox(new Point3D(0, 0, 0), 1, 1, 1);
