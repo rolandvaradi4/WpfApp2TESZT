@@ -12,6 +12,7 @@ namespace WpfApp2.Handlers.MapGen
     public class map
     {
         private readonly Model3DGroup _cubeInstances = new Model3DGroup();
+        
 
         public map(int numCubesX, int numCubesZ, ImageBrush texture)
         {
@@ -22,13 +23,13 @@ namespace WpfApp2.Handlers.MapGen
             var transforms = new List<Transform3D>();
             for (int x = 0; x < numCubesX; x++)
             {
-                for (int z = 0; z < numCubesZ; z++)
+                for (int y = 0; y < numCubesZ; y++)
                 {
                     var meshBuilder = new MeshBuilder();
                     meshBuilder.AddBox(new Point3D(0, 0, 0), 1, 1, 1);
                     var geometry = meshBuilder.ToMesh();
                     var cubeVisual = new GeometryModel3D(geometry, material);
-                    cubeVisual.Transform = new TranslateTransform3D(x, 0, z);
+                    cubeVisual.Transform = new TranslateTransform3D(x, y, 0);
                     _cubeInstances.Children.Add(cubeVisual);
                 }
             }

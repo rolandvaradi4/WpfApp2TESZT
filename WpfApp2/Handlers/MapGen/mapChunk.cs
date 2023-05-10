@@ -17,9 +17,9 @@ namespace WpfApp2
     public class MapChunk
     {
         public readonly int chunkSize = 16;
-        private readonly int worldSize = 3;
-        private readonly int blockHeight = 3;
-        private readonly int maxHeight = 3;
+        private readonly int worldSize = 1;
+        private readonly int blockHeight = 1;
+        private readonly int maxHeight = 1;
         private readonly Random random = new Random();
         private readonly List<ModelVisual3D> models = new List<ModelVisual3D>();
 
@@ -33,12 +33,11 @@ namespace WpfApp2
                 for (int y = yStart; y < yStart + chunkSize; y++)
                 {
                     int height = (int)((Math.Sin(x / 10.0) + Math.Cos(y / 10.0)) * blockHeight) + maxHeight;
-                    for (int z = 0; z < height; z++)
-                    {
+                    
                         var model = new cube().Cube();
                         model.Transform = new TranslateTransform3D(x, y, 1);
                         models.Add(model);
-                    }
+                    
                 }
             }
 

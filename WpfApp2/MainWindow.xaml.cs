@@ -26,28 +26,38 @@ namespace WpfApp2
       
         private readonly MapChunk mapChunk = new MapChunk();
         private Point3D currentPosition;
+        private const int TargetFPS = 30; // pl. 30 FPS
+        private readonly System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
+
         public MainWindow()
         {
             InitializeComponent();
-            CompositionTarget.Rendering += CompositionTarget_Rendering;
+            
+         
+            
+
             // Initialize the camera
             // Access the PLAYER_CAMERA from the Globals class
             PerspectiveCamera playerCamera = Globals.PLAYER_CAMERA;
             viewport.Camera = playerCamera;
-            cameraHandler = new CameraHandlers(this);    
-            
+            viewport.ClipToBounds = false;
+            viewport.IsHitTestVisible = false;
+            cameraHandler = new CameraHandlers(this);
+            timer.Interval = TimeSpan.FromMilliseconds(1000.0 / TargetFPS);
+            timer.Tick += Timer_Tick;
+            timer.Start();
+
             Keyboard.Focus(this);
             HookUpEvents();
 
         }
-        private void CompositionTarget_Rendering(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
             Point3D newPosition = cameraHandler.playerCamera.Position;
 
-            if (Math.Floor(newPosition.X / mapChunk.chunkSize) != Math.Floor(currentPosition.X / mapChunk.chunkSize) ||
-                Math.Floor(newPosition.Y / mapChunk.chunkSize) != Math.Floor(currentPosition.Y / mapChunk.chunkSize))
+            if (IsCameraAtMapEdge(newPosition))
             {
-                // Player has moved out of the current map chunk, generate a new one
+                // Player is at the edge of the map, generate a new one
                 List<ModelVisual3D> newModels = mapChunk.GenerateChunk(newPosition);
                 foreach (var model in newModels)
                 {
@@ -71,6 +81,27 @@ namespace WpfApp2
             }
 
             currentPosition = newPosition;
+
+            viewport.InvalidateVisual(); // frissítjük a viewport tartalmát
+        }
+
+
+
+
+
+        private bool IsCameraAtMapEdge(Point3D cameraPosition)
+        {
+            double halfMapSize= mapChunk.chunkSize / 2;
+            double x = cameraPosition.X;
+            double y = cameraPosition.Y;
+          
+        
+            if (x < -halfMapSize || x > halfMapSize || y < -halfMapSize || y > halfMapSize || (x==0 && y==0))
+            {
+                return true;
+            }
+
+            return false;
         }
 
 

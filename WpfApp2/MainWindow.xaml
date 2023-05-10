@@ -14,8 +14,9 @@
                     <Model3DGroup>
                        
                        
-                        <DirectionalLight Color="White" Direction="1,1,1"/>
+                        
                         <DirectionalLight Color="White" Direction="-1,-1,-1"/>
+                        <DirectionalLight Color="White" Direction="1,1,1"/>
                     </Model3DGroup>
                 </ModelVisual3D.Content>
             </ModelVisual3D>

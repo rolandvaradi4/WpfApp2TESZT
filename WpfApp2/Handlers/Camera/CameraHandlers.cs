@@ -25,6 +25,8 @@ namespace WpfApp2.Handlers.Camera
             this.mainWindow = mainWindow;
             this.viewport = mainWindow.viewport;
             playerCamera = Globals.PLAYER_CAMERA;
+            playerCamera.FarPlaneDistance = 20;
+            playerCamera.NearPlaneDistance = 0.1;
         }
 
         [DllImport("user32.dll")]
