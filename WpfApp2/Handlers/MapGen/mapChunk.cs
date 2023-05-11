@@ -19,14 +19,14 @@ namespace WpfApp2.Handlers.MapGen
         private readonly int _startnumCubesX;
         private readonly int _starnumCubesY;
 
-        public MapChunk(int numCubesX, int numCubesY,int startnumCubesX, int starnumCubesY)
+        public MapChunk(int numCubesX, int numCubesY,int startnumCubesX, int starnumCubesY, Vector3D lookDirection)
         {
             _numCubesX = numCubesX;
             _numCubesY = numCubesY;
          
             _startnumCubesX = startnumCubesX;
             _starnumCubesY = starnumCubesY;
-            _map = new map(_numCubesX, _numCubesY, _startnumCubesX, _starnumCubesY);
+            _map = new map(_numCubesX, _numCubesY, _startnumCubesX, _starnumCubesY, lookDirection);
             AddCubeInstances();
         }
 

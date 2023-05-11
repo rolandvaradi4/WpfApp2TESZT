@@ -61,27 +61,28 @@ namespace WpfApp2
       
         public int StartNumCubeX = 0;
         public int StartNumCubeY = 0;
-        public int NumCubeX = 10;
-        public int NumCubeY = 10;
-        public int edgeX = 7;
-        public int edgeY = 7;
-        public MapChunk mapChunk= new MapChunk(10,10,0,0);
+        public int NumCubeX = 20;
+        public int NumCubeY = 20;
+     
+        public MapChunk mapChunk= new MapChunk(10,10,0,0,Globals.PLAYER_CAMERA.LookDirection);
 
         private List<MapChunk> visibleMapChunks = new List<MapChunk>(); // lista a látható térképrészletekről
 
         private void Timer_Tick(object sender, EventArgs e)
         {
             Point3D newPosition = cameraHandler.playerCamera.Position;
+           
+
 
             if (IsCameraAtMapEdge(newPosition))
             {
                 // Calculate the start and end positions of the new map chunk
-                double startNumCubesX = Math.Floor(newPosition.X) - NumCubeX / 2;
-                double startNumCubesY = Math.Floor(newPosition.Y) - NumCubeY / 2;
+                double startNumCubesX = newPosition.X;
+                double startNumCubesY = newPosition.Y;
 
 
                 // Generate a new map chunk at the player's position
-                MapChunk newMapChunk = new MapChunk(NumCubeX, NumCubeY,(int) startNumCubesX,(int) startNumCubesY);
+                MapChunk newMapChunk = new MapChunk(NumCubeX, NumCubeY,(int) startNumCubesX,(int) startNumCubesY, cameraHandler.playerCamera.LookDirection);
 
                 // Add the new map chunk to the children of the viewport
                 viewport.Children.Add(new ModelVisual3D { Content = newMapChunk.CubeInstances });
