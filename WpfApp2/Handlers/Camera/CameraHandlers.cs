@@ -96,6 +96,7 @@ namespace WpfApp2.Handlers.Camera
                 // Use the dispatcher to update the camera on the UI thread
                 await Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
+                    mainWindow.MousePositionTextBlock.Text = playerCamera.GetInfo().ToString();
                     // Move the camera in the specified direction by the current speed
                     switch (key)
                     {
