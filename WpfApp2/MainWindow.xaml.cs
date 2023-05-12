@@ -47,15 +47,15 @@ namespace WpfApp2
             viewport.ClipToBounds = false;
             viewport.IsHitTestVisible = false;
             cameraHandler = new CameraHandlers(this);
-
+            HookUpEvents();
 
             timer.Interval = TimeSpan.FromMilliseconds(1000.0 / TargetFPS);
-            timer.Tick += Timer_Tick;
+            
             timer.Start();
 
 
             Keyboard.Focus(this);
-            HookUpEvents();
+            
 
         }
       
@@ -150,8 +150,9 @@ namespace WpfApp2
         public void HookUpEvents()
         {
             KeyDown += cameraHandler.MainWindow_KeyDown;
+            timer.Tick += Timer_Tick;
             MouseMove += cameraHandler.GameViewport_MouseMove;
-            KeyDown += cameraHandler.MainWindow_KeyDown;
+
         }
 
         [DllImport("user32.dll")]

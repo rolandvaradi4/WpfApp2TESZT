@@ -20,6 +20,7 @@ namespace WpfApp2.Models
             // Create the cube mesh
             BitmapImage textureImage = TextureID.Grass;
             MeshGeometry3D mesh = new MeshGeometry3D();
+
             mesh.Positions = new Point3DCollection(new Point3D[]
             {
                 new Point3D(-1, -1, 1),
