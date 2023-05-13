@@ -46,9 +46,9 @@ namespace WpfApp2.Handlers.Mouse
             var cubeVisual = new GeometryModel3D(geometry, material);
             List<Point3D> allCubes = GetBlockPositions(map.CubeInstances, CubeBlocks).ToList();
 
-            if (allCubes.Any(cube => cube.X == x || cube.Y == y || cube.Z + 1 == z + 1))
+            if (allCubes.Any(cube => cube.X == x || cube.Y == y || cube.Z == z))
             {
-                cubeVisual.Transform = new TranslateTransform3D(x, y, z + 1);
+                cubeVisual.Transform = new TranslateTransform3D(x, y, z);
                 CubeBlocks.Children.Add(cubeVisual);
             }
         }
