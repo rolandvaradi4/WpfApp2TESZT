@@ -33,6 +33,10 @@ namespace WpfApp2
         private readonly System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
         private BlockClickHandler blockClickHandler;
 
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            Cursor = Cursors.None;
+        }
         public MainWindow()
         {
             InitializeComponent();
