@@ -20,7 +20,7 @@ namespace WpfApp2.Handlers.Mouse
         CameraHandlers camera;
         MapChunk map;
         public readonly Model3DGroup CubeBlocks = new Model3DGroup();
-
+        
         public BlockClickHandler(Viewport3D viewport, CameraHandlers camera, MapChunk map)
         {
             this.viewport = viewport; 
@@ -31,7 +31,7 @@ namespace WpfApp2.Handlers.Mouse
         public void AddBlock(Viewport3D viewport, CameraHandlers camera, MapChunk map)
         {
             Point3D Position = camera.playerCamera.Position;
-            Point3D Target = camera.playerCamera.LookDirection + camera.playerCamera.Position;
+            Point3D Target = (camera.playerCamera.LookDirection) * 4 + camera.playerCamera.Position;
 
             BitmapImage imagea = TextureID.Grass;
             ImageBrush texture = new ImageBrush(imagea);
@@ -44,11 +44,38 @@ namespace WpfApp2.Handlers.Mouse
             meshBuilder.AddBox(new Point3D(0, 0, 0), 1, 1, 1);
             var geometry = meshBuilder.ToMesh();
             var cubeVisual = new GeometryModel3D(geometry, material);
-            cubeVisual.Transform = new TranslateTransform3D(x, y, z);
-            CubeBlocks.Children.Add(cubeVisual);
-            
+            List<Point3D> allCubes = GetBlockPositions(map.CubeInstances, CubeBlocks).ToList();
 
+            if (allCubes.Any(cube => cube.X == x || cube.Y == y || cube.Z + 1 == z + 1))
+            {
+                cubeVisual.Transform = new TranslateTransform3D(x, y, z + 1);
+                CubeBlocks.Children.Add(cubeVisual);
+            }
         }
+
+        public List<Point3D> GetBlockPositions(params Model3DGroup[] cubeBlocks)
+        {
+            List<Point3D> positions = new List<Point3D>();
+            foreach (var group in cubeBlocks)
+            {
+                foreach (var child in group.Children)
+                {
+                    if (child is GeometryModel3D geometryModel)
+                    {
+                        // Get the position of the cube from the transform of the GeometryModel3D
+                        if (geometryModel.Transform is TranslateTransform3D translateTransform)
+                        {
+                            Point3D position = new Point3D(translateTransform.OffsetX, translateTransform.OffsetY, translateTransform.OffsetZ);
+                            positions.Add(position);
+                        }
+                    }
+                }
+            }
+            return positions;
+        }
+
+
+
 
         public void RemoveBlock(Viewport3D viewport, CameraHandlers camera, MapChunk map)
         {
@@ -68,5 +95,8 @@ namespace WpfApp2.Handlers.Mouse
             map.CubeInstances.Children.Remove(cubeVisual);
 
         }
+
+      
+
     }
 }

@@ -29,7 +29,7 @@ namespace WpfApp2
 
        
         private Point3D currentPosition;
-        private const int TargetFPS = 60; // pl. 30 FPS
+        private const int TargetFPS = 30; // pl. 30 FPS
         private readonly System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
         private BlockClickHandler blockClickHandler;
 
@@ -83,8 +83,8 @@ namespace WpfApp2
 
         public int StartNumCubeX = 0;
         public int StartNumCubeY = 0;
-        public int NumCubeX = 20;
-        public int NumCubeY = 20;
+        public int NumCubeX = 16;
+        public int NumCubeY = 16;
      
         public MapChunk mapChunk= new MapChunk(10,10,0,0,Globals.PLAYER_CAMERA.LookDirection);
 
@@ -93,8 +93,6 @@ namespace WpfApp2
         private void Timer_Tick(object sender, EventArgs e)
         {
             Point3D newPosition = cameraHandler.playerCamera.Position;
-           
-
 
             if (IsCameraAtMapEdge(newPosition))
             {
@@ -102,9 +100,8 @@ namespace WpfApp2
                 double startNumCubesX = newPosition.X;
                 double startNumCubesY = newPosition.Y;
 
-
                 // Generate a new map chunk at the player's position
-                MapChunk newMapChunk = new MapChunk(NumCubeX, NumCubeY,(int) startNumCubesX,(int) startNumCubesY, cameraHandler.playerCamera.LookDirection);
+                MapChunk newMapChunk = new MapChunk(NumCubeX, NumCubeY, (int)startNumCubesX, (int)startNumCubesY, cameraHandler.playerCamera.LookDirection);
 
                 // Add the new map chunk to the children of the viewport
                 viewport.Children.Add(new ModelVisual3D { Content = newMapChunk.CubeInstances });
@@ -135,29 +132,56 @@ namespace WpfApp2
                 }
 
                 // Set the new map chunk as the current one
-            if (Mouse.RightButton == MouseButtonState.Pressed)
-            {
-                // Call the AddBlock method of BlockClickHandler
-                blockClickHandler.AddBlock(viewport, cameraHandler, newMapChunk); 
-                viewport.Children.Add(new ModelVisual3D { Content = blockClickHandler.CubeBlocks });
-
-            }
                 mapChunk = newMapChunk;
                 visibleMapChunks.Add(mapChunk);
             }
 
             currentPosition = newPosition;
+
+            // Check if CubeBlocks are in the viewport.Children collection
+            bool cubeBlocksPresent = false;
+            foreach (var child in viewport.Children)
+            {
+                if (child is ModelVisual3D modelVisual && modelVisual.Content == blockClickHandler.CubeBlocks)
+                {
+                    cubeBlocksPresent = true;
+                    break;
+                }
+            }
+
             if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
                 // Call the RemoveBlock method of BlockClickHandler
                 blockClickHandler.RemoveBlock(viewport, cameraHandler, mapChunk);
-                
-            }
 
-            
+                // Remove CubeBlocks from the viewport if they are present
+                if (cubeBlocksPresent)
+                {
+                    foreach (var child in viewport.Children)
+                    {
+                        if (child is ModelVisual3D modelVisual && modelVisual.Content == blockClickHandler.CubeBlocks)
+                        {
+                            viewport.Children.Remove(modelVisual);
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (Mouse.RightButton == MouseButtonState.Pressed)
+            {
+                // Call the AddBlock method of BlockClickHandler
+                blockClickHandler.AddBlock(viewport, cameraHandler, mapChunk);
+
+                // Add CubeBlocks to the viewport if they are not present
+                if (!cubeBlocksPresent)
+                {
+                    viewport.Children.Add(new ModelVisual3D { Content = blockClickHandler.CubeBlocks });
+                }
+            }
 
             viewport.InvalidateVisual(); // update the viewport content
         }
+
 
 
 
