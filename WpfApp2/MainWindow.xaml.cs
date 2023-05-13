@@ -15,6 +15,7 @@ using WpfApp2.Config;
 using WpfApp2.Handlers.Camera;
 using System.Windows.Media.TextFormatting;
 using System.Linq;
+using WpfApp2.Handlers.Mouse;
 
 namespace WpfApp2
 {
@@ -28,11 +29,10 @@ namespace WpfApp2
 
        
         private Point3D currentPosition;
-        private const int TargetFPS = 30; // pl. 30 FPS
+        private const int TargetFPS = 60; // pl. 30 FPS
         private readonly System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
-       
-       
-      
+        private BlockClickHandler blockClickHandler;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -55,10 +55,32 @@ namespace WpfApp2
 
 
             Keyboard.Focus(this);
-            
+            blockClickHandler  = new BlockClickHandler(viewport, cameraHandler, mapChunk);
 
         }
-      
+        private void Viewport_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Call the RemoveBlock method of BlockClickHandler
+         
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                // Call the RemoveBlock method of BlockClickHandler
+                blockClickHandler.RemoveBlock(viewport, cameraHandler, mapChunk);
+            }
+           
+        }
+
+        private void Viewport_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Call the AddBlock method of BlockClickHandler
+            
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                // Call the RemoveBlock method of BlockClickHandler
+                blockClickHandler.AddBlock(viewport, cameraHandler, mapChunk);
+            }
+        }
+
         public int StartNumCubeX = 0;
         public int StartNumCubeY = 0;
         public int NumCubeX = 20;
@@ -113,11 +135,26 @@ namespace WpfApp2
                 }
 
                 // Set the new map chunk as the current one
+            if (Mouse.RightButton == MouseButtonState.Pressed)
+            {
+                // Call the AddBlock method of BlockClickHandler
+                blockClickHandler.AddBlock(viewport, cameraHandler, newMapChunk); 
+                viewport.Children.Add(new ModelVisual3D { Content = blockClickHandler.CubeBlocks });
+
+            }
                 mapChunk = newMapChunk;
                 visibleMapChunks.Add(mapChunk);
             }
 
             currentPosition = newPosition;
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                // Call the RemoveBlock method of BlockClickHandler
+                blockClickHandler.RemoveBlock(viewport, cameraHandler, mapChunk);
+                
+            }
+
+            
 
             viewport.InvalidateVisual(); // update the viewport content
         }
