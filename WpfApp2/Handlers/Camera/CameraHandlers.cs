@@ -39,7 +39,9 @@ namespace WpfApp2.Handlers.Camera
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            if(Keyboard.IsKeyDown(Key.Escape))
+            if (!CollisionDetection())
+                playerCamera.Position += -playerCamera.UpDirection * Globals.GRAVITY_RATE;
+            if (Keyboard.IsKeyDown(Key.Escape))
                 mainWindow.Close();
             if (Keyboard.IsKeyDown(Key.W))
                 MoveCameraAsync(Key.W);
@@ -51,8 +53,6 @@ namespace WpfApp2.Handlers.Camera
                 MoveCameraAsync(Key.D);
             if (Keyboard.IsKeyDown(Key.Space))
                 MoveCameraAsync(Key.Space);
-            if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                MoveCameraAsync(Key.LeftCtrl);
 
         }
 
@@ -116,68 +116,31 @@ namespace WpfApp2.Handlers.Camera
         private async Task MoveCameraAsync(Key key)
         {
             PerspectiveCamera playerCamera = Globals.PLAYER_CAMERA;
-
+            mainWindow.MousePositionTextBlock.Text = playerCamera.GetInfo().ToString();
             switch (key)
             {
                 case Key.W:
-                    if (CollisionDetection())
-                    {
-                        // Break out of the entire case statement
-                        playerCamera.Position -= new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CAMERA_MOVE_SPEED;
-                        break;
-                    }
+                    
                     playerCamera.Position += new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CAMERA_MOVE_SPEED;
                     break;
                 case Key.A:
-                    if (CollisionDetection())
-                    {
-                        // Break out of the entire case statement
-                        playerCamera.Position += Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
-                        playerCamera.Position += new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CAMERA_MOVE_SPEED;
-                        break;
-                    }
+                    
                     playerCamera.Position -= Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
                     playerCamera.Position -= new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CAMERA_MOVE_SPEED;
                     playerCamera.Position = (Point3D)new Vector3D(playerCamera.Position.X, playerCamera.Position.Y, Math.Round(playerCamera.Position.Z));
                     break;
                 case Key.S:
-                    if (CollisionDetection())
-                    {
-                        // Break out of the entire case statement
-                        playerCamera.Position += new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CAMERA_MOVE_SPEED;
-                        break;
-                    }
+                    
                     playerCamera.Position -= new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CAMERA_MOVE_SPEED;
                     break;
                 case Key.D:
-                    if (CollisionDetection())
-                    {
-                        // Break out of the entire case statement
-                        playerCamera.Position -= Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
-                        playerCamera.Position -= new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CAMERA_MOVE_SPEED;
-                        break;
-                    }
+                    
                     playerCamera.Position += Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
                     playerCamera.Position += new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CAMERA_MOVE_SPEED;
                     playerCamera.Position = (Point3D)new Vector3D(playerCamera.Position.X, playerCamera.Position.Y, Math.Round(playerCamera.Position.Z));
                     break;
                 case Key.Space:
-                    if (CollisionDetection())
-                    {
-                        // Break out of the entire case statement
-                        playerCamera.Position += playerCamera.UpDirection * Globals.CAMERA_MOVE_SPEED;
-                        break;
-                    }
                     playerCamera.Position += playerCamera.UpDirection * Globals.CAMERA_MOVE_SPEED;
-                    break;
-                case Key.LeftCtrl:
-                    if (CollisionDetection())
-                    {
-                        // Break out of the entire case statement
-                        playerCamera.Position -= -playerCamera.UpDirection * Globals.CAMERA_MOVE_SPEED;
-                        break;
-                    }
-                    playerCamera.Position += -playerCamera.UpDirection * Globals.CAMERA_MOVE_SPEED;
                     break;
             }
         }
@@ -193,7 +156,8 @@ namespace WpfApp2.Handlers.Camera
                 {
                     Transform3D modelTransform = geometryModel.Transform;
                     Rect3D modelBounds = GetModelBoundsRecursive(geometryModel, modelTransform);
-                    Rect3D cameraBounds = new Rect3D(playerCamera.Position, new Size3D(1, 1, 3));
+                    Rect3D cameraBounds = new Rect3D(playerCamera.Position, new Size3D(1, 1, 1));
+                    cameraBounds.Offset(0, 0, -1.5);
                     return cameraBounds.IntersectsWith(modelBounds);
                 })
                 .Any(hasCollision => hasCollision);
