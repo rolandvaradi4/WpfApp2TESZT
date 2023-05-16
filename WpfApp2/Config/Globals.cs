@@ -13,5 +13,7 @@ namespace WpfApp2.Config
         public static double CAMERA_MOVE_SPEED = 0.005;
         public static double CAMERA_ROTATE_SPEED = 0.1;
         public static double CAMERA_ACCELERATION = 0.001;
+        public static int TargetFPS = 30; // pl. 30 FPS
+
     }
 }
