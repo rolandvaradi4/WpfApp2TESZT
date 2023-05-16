@@ -50,12 +50,8 @@ namespace WpfApp2
         public MainWindow()
         {
             InitializeComponent();
-
             Initialise();
             HookUpEvents();
-
-            
-            
 
         }
         public void Initialise()

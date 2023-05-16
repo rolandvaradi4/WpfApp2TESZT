@@ -15,7 +15,6 @@ namespace WpfApp2.Handlers.MapGen
     public class Chunk
     {
         public readonly int chunkSize = 8;
-        private readonly int worldSize = 50;
         private readonly int blockHeight = 8;
         private readonly int maxHeight = 64;
         private readonly Random random = new Random();
