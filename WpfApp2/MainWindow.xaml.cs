@@ -16,6 +16,7 @@ using WpfApp2.Handlers.Camera;
 using System.Windows.Media.TextFormatting;
 using System.Linq;
 using WpfApp2.Handlers.Mouse;
+using WpfApp2.Handlers.TickRate;
 
 namespace WpfApp2
 {
@@ -32,16 +33,33 @@ namespace WpfApp2
         private const int TargetFPS = 30; // pl. 30 FPS
         private readonly System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
         private BlockClickHandler blockClickHandler;
+        private TickHandler tickHandler;
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             Cursor = Cursors.None;
         }
+
+        public void HookUpEvents()
+        {
+            KeyDown += cameraHandler.MainWindow_KeyDown;
+            tickHandler.timer.Tick += Timer_Tick;
+            MouseMove += cameraHandler.GameViewport_MouseMove;
+
+        }
         public MainWindow()
         {
             InitializeComponent();
 
+            Initialise();
+            HookUpEvents();
+
             
+            
+
+        }
+        public void Initialise()
+        {
             List<Rect3D> cubeBoundingBoxes = new List<Rect3D>();
 
             // Initialize the camera
@@ -51,17 +69,12 @@ namespace WpfApp2
             viewport.ClipToBounds = false;
             viewport.IsHitTestVisible = false;
             cameraHandler = new CameraHandlers(this);
-            HookUpEvents();
-
-            timer.Interval = TimeSpan.FromMilliseconds(1000.0 / TargetFPS);
-            
-            timer.Start();
-
-
+            tickHandler = new TickHandler();
+            blockClickHandler = new BlockClickHandler(viewport, cameraHandler, mapChunk);
             Keyboard.Focus(this);
-            blockClickHandler  = new BlockClickHandler(viewport, cameraHandler, mapChunk);
-
         }
+
+
         private void Viewport_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // Call the RemoveBlock method of BlockClickHandler
@@ -212,13 +225,7 @@ namespace WpfApp2
 
 
 
-        public void HookUpEvents()
-        {
-            KeyDown += cameraHandler.MainWindow_KeyDown;
-            timer.Tick += Timer_Tick;
-            MouseMove += cameraHandler.GameViewport_MouseMove;
-
-        }
+        
 
         [DllImport("user32.dll")]
         static extern bool SetCursorPos(int x, int y);
