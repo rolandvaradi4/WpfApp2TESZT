@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
-using HelixToolkit.Wpf;
-using WpfApp2.Handlers.MapGen;
-using WpfApp2.Models.Textures;
 using WpfApp2.Config;
 using WpfApp2.Handlers.Camera;
-using System.Windows.Media.TextFormatting;
-using System.Linq;
+using WpfApp2.Handlers.MapGen;
 using WpfApp2.Handlers.Mouse;
 using WpfApp2.Handlers.TickRate;
 
@@ -27,21 +20,22 @@ namespace WpfApp2
     {
 
         private CameraHandlers cameraHandler;
-
-       
-        private Point3D currentPosition;
-        private const int TargetFPS = 30; // pl. 30 FPS
-        private readonly System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
         private BlockClickHandler blockClickHandler;
         private TickHandler tickHandler;
 
+        private Point3D currentPosition;
+        
+
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+
+            // Hides the cursor when the window loads
             Cursor = Cursors.None;
         }
 
         public void HookUpEvents()
         {
+            // Gets called when the window loads, will hook up events from the proper handlers to the actions.
             KeyDown += cameraHandler.MainWindow_KeyDown;
             tickHandler.timer.Tick += Timer_Tick;
             MouseMove += cameraHandler.GameViewport_MouseMove;
@@ -74,19 +68,19 @@ namespace WpfApp2
         private void Viewport_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // Call the RemoveBlock method of BlockClickHandler
-         
+
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 // Call the RemoveBlock method of BlockClickHandler
                 blockClickHandler.RemoveBlock(viewport, cameraHandler, mapChunk);
             }
-           
+
         }
 
         private void Viewport_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             // Call the AddBlock method of BlockClickHandler
-            
+
             if (e.RightButton == MouseButtonState.Pressed)
             {
                 // Call the RemoveBlock method of BlockClickHandler
@@ -98,8 +92,8 @@ namespace WpfApp2
         public int StartNumCubeY = 0;
         public int NumCubeX = 16;
         public int NumCubeY = 16;
-     
-        public MapChunk mapChunk= new MapChunk(10,10,0,0,Globals.PLAYER_CAMERA.LookDirection);
+
+        public MapChunk mapChunk = new MapChunk(10, 10, 0, 0, Globals.PLAYER_CAMERA.LookDirection);
 
         private List<MapChunk> visibleMapChunks = new List<MapChunk>(); // lista a látható térképrészletekről
 
@@ -194,13 +188,6 @@ namespace WpfApp2
 
             viewport.InvalidateVisual(); // update the viewport content
         }
-
-
-
-
-
-
-
         private bool IsCameraAtMapEdge(Point3D cameraPosition)
         {
             double mapSize = Math.Max(NumCubeX, NumCubeY);
@@ -210,21 +197,12 @@ namespace WpfApp2
                 cameraPosition.X > StartNumCubeX + NumCubeX - halfMapSize ||
                 cameraPosition.Y < StartNumCubeY + halfMapSize ||
                 cameraPosition.Y > StartNumCubeY + NumCubeY - halfMapSize ||
-                (cameraPosition.X==0 && cameraPosition.Y==0))
+                (cameraPosition.X == 0 && cameraPosition.Y == 0))
             {
                 return true;
             }
 
             return false;
         }
-
-
-
-
-        
-
-        [DllImport("user32.dll")]
-        static extern bool SetCursorPos(int x, int y);
-
     }
 }
