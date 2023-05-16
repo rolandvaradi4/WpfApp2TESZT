@@ -98,7 +98,8 @@ namespace WpfApp2
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            Point3D newPosition = cameraHandler.playerCamera.Position;
+
+            Point3D newPosition = cameraHandler.playerCamera.Position - (2 * cameraHandler.playerCamera.LookDirection);
 
             if (IsCameraAtMapEdge(newPosition))
             {
