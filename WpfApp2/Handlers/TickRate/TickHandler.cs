@@ -7,7 +7,7 @@ using WpfApp2.Config;
 
 namespace WpfApp2.Handlers.TickRate
 {
-    internal class TickHandler
+    public class TickHandler
     {
        
         public readonly System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();

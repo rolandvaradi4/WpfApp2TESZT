@@ -36,7 +36,6 @@ namespace WpfApp2
         public void HookUpEvents()
         {
             // Gets called when the window loads, will hook up events from the proper handlers to the actions.
-            KeyDown += cameraHandler.MainWindow_KeyDown;
             tickHandler.timer.Tick += Timer_Tick;
             MouseMove += cameraHandler.GameViewport_MouseMove;
 
@@ -58,8 +57,8 @@ namespace WpfApp2
             viewport.Camera = playerCamera;
             viewport.ClipToBounds = false;
             viewport.IsHitTestVisible = false;
-            cameraHandler = new CameraHandlers(this);
             tickHandler = new TickHandler();
+            cameraHandler = new CameraHandlers(this,tickHandler);
             blockClickHandler = new BlockClickHandler(viewport, cameraHandler, mapChunk);
             Keyboard.Focus(this);
         }
