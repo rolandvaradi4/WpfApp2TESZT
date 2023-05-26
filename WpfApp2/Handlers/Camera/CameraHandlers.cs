@@ -39,10 +39,15 @@ namespace WpfApp2.Handlers.Camera
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
+            //Gravitáció a playernek
             if (!CollisionDetection())
                 playerCamera.Position += -playerCamera.UpDirection * Globals.GRAVITY_RATE;
+
+            //Escape-re bezár a program.
             if (Keyboard.IsKeyDown(Key.Escape))
                 mainWindow.Close();
+
+
             if (Keyboard.IsKeyDown(Key.W))
                 MoveCameraAsync(Key.W);
             if (Keyboard.IsKeyDown(Key.S))
