@@ -17,6 +17,7 @@ using WpfApp2.Config;
 using WpfApp2.Models;
 using WpfApp2.Models.Textures;
 using Accord.Math;
+using Microsoft.Windows.Themes;
 
 namespace WpfApp2.Handlers.MapGen
 {
@@ -31,13 +32,13 @@ namespace WpfApp2.Handlers.MapGen
         private int maxHeight = 0;
         private readonly Random random = new Random();
         private ConcurrentBag<cube> cubes= new ConcurrentBag<cube>();
-
+        private ConcurrentBag<cube> cubesToRender= new ConcurrentBag<cube>();
         public void GenerateChunk(string chunkID)
         {
             this.chunkID = chunkID.Split(',').Select(int.Parse).ToArray();
 
-            int xOffset = chunkID[0] * Globals.ChunkSize;
-            int yOffset = chunkID[1] * Globals.ChunkSize;
+            int xOffset = this.chunkID[0] * Globals.ChunkSize;
+            int yOffset = this.chunkID[1] * Globals.ChunkSize;
 
             Parallel.For(xOffset, xOffset + Globals.ChunkSize, x =>
             {
@@ -63,11 +64,75 @@ namespace WpfApp2.Handlers.MapGen
                     }
                 });
             });
+            CubesToRender();
+        }
+        public ConcurrentBag<cube> GetRenderCubes()
+        {
+            
+            return cubesToRender;
         }
 
-        public List<ModelVisual3D> UpdateChunk(Point3D position, Viewport3D viewport)
+        void CubesToRender()
         {
-            return null;
+            for (int z = maxHeight; z >=0; z--)
+            {
+                bool fullPlane = true;
+                for (int x = 0; x < Globals.ChunkSize; x++)
+                {
+                    for (int y =  0; y < Globals.ChunkSize; y++)
+                    {
+                        cube cube = GetCube(x, y, z);
+                        if (cube != null)
+                        {
+                            ;
+                        }
+                        if (cube == null)
+                        {
+                            fullPlane= false;
+                            if (GetCube(x + 1, y, z)!=null)
+                            {
+                                cubesToRender.Add(GetCube(x + 1, y, z));
+                            }
+                            if (GetCube(x -1, y, z) != null)
+                            {
+                                cubesToRender.Add(GetCube(x -1, y, z));
+                            }
+                            if (GetCube(x , y+1, z) != null)
+                            {
+                                cubesToRender.Add(GetCube(x, y+1, z));
+                            }
+                            if (GetCube(x, y - 1, z) != null)
+                            {
+                                cubesToRender.Add(GetCube(x, y - 1, z));
+                            }
+                            if (GetCube(x, y , z+1) != null)
+                            {
+                                cubesToRender.Add(GetCube(x, y, z+1));
+                            }
+                            if (GetCube(x, y, z - 1) != null)
+                            {
+                                cubesToRender.Add(GetCube(x, y, z - 1));
+                            }
+                        }
+                    }
+                }
+                if(fullPlane)
+                {
+                    break;
+                }
+            }
+        }
+
+        public cube GetCube(int x, int y, int z)
+        {
+            int xOffset = chunkID[0] * Globals.ChunkSize;
+            int yOffset = chunkID[1] * Globals.ChunkSize;
+            if (xOffset == 0 && yOffset == 0)
+            {
+                ; 
+            }
+            cube cube = cubes.AsParallel().FirstOrDefault(cube => cube.coordinates[0] == x + xOffset && cube.coordinates[1] == y + yOffset && cube.coordinates[2] == z);
+            return cube;
         }
 
     }

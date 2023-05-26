@@ -16,14 +16,15 @@ namespace WpfApp2.Models
 {
     public class cube
     {
-        ModelVisual3D visual;
+        public ModelVisual3D visual;
         BitmapImage textureImage = TextureID.Grass;
         MeshGeometry3D mesh;
-        int[] coordinates;
+        bool shouldItBeRendered = false;
+        public int[] coordinates;
 
         public cube(BitmapImage textureImage,int x, int y, int z)
         {
-            coordinates = new int[] { x, y, z };
+            coordinates = new int[] { x-1, y-1, z };
 
             this.visual = new ModelVisual3D();
             this.textureImage = textureImage;

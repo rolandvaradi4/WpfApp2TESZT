@@ -14,13 +14,13 @@ namespace WpfApp2.Handlers.MapGen
 {
     public class Map
     {
-        ConcurrentBag<Chunk> Chunks = new ConcurrentBag<Chunk>();
+        public ConcurrentBag<Chunk> Chunks = new ConcurrentBag<Chunk>();
 
         public Map()
         {
-            Parallel.For(0, 5, x =>
+            Parallel.For(-2, 2, x =>
             {
-                Parallel.For(0, 5, y =>
+                Parallel.For(-2, 2, y =>
                 {
                     Chunk chunk = new Chunk();
                     chunk.GenerateChunk($"{x},{y}");
@@ -29,6 +29,7 @@ namespace WpfApp2.Handlers.MapGen
                 });
             });
         }
+
 
         public async void GenerateChunkByCoordinates(int x, int y)
         {

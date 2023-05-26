@@ -21,7 +21,7 @@ namespace WpfApp2.Config
             {
                 if (playerCamera == null)
                 {
-                    playerCamera = new PerspectiveCamera(new Point3D(0, 0, 3), new Vector3D(0, 1, 0), new Vector3D(0, 0, 1), Globals.FOV);
+                    playerCamera = new PerspectiveCamera(new Point3D(0, 0, 200), new Vector3D(0, 1, 0), new Vector3D(0, 0, 1), Globals.FOV);
                 }
                 return playerCamera;
             }
