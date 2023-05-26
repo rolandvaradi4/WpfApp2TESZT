@@ -47,7 +47,7 @@ namespace WpfApp2.Handlers.Camera
             if (Keyboard.IsKeyDown(Key.Escape))
                 mainWindow.Close();
 
-
+            //mozgásért felelős
             if (Keyboard.IsKeyDown(Key.W))
                 MoveCameraAsync(Key.W);
             if (Keyboard.IsKeyDown(Key.S))
