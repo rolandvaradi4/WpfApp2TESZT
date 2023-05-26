@@ -18,17 +18,17 @@ namespace WpfApp2.Handlers.Mouse
     {
         Viewport3D viewport;
         CameraHandlers camera;
-        MapChunk map;
+
         public readonly Model3DGroup CubeBlocks = new Model3DGroup();
         
-        public BlockClickHandler(Viewport3D viewport, CameraHandlers camera, MapChunk map)
+        public BlockClickHandler(Viewport3D viewport, CameraHandlers camera)
         {
             this.viewport = viewport; 
             this.camera = camera;
-            this.map = map;
+
         }
 
-        public void AddBlock(Viewport3D viewport, CameraHandlers camera, MapChunk map)
+        public void AddBlock(Viewport3D viewport, CameraHandlers camera)
         {
             Point3D Position = camera.playerCamera.Position;
             Point3D Target = (camera.playerCamera.LookDirection) * 4 + camera.playerCamera.Position;
@@ -44,13 +44,6 @@ namespace WpfApp2.Handlers.Mouse
             meshBuilder.AddBox(new Point3D(0, 0, 0), 1, 1, 1);
             var geometry = meshBuilder.ToMesh();
             var cubeVisual = new GeometryModel3D(geometry, material);
-            List<Point3D> allCubes = GetBlockPositions(map.CubeInstances, CubeBlocks).ToList();
-
-            if (allCubes.Any(cube => cube.X == x || cube.Y == y || cube.Z == z))
-            {
-                cubeVisual.Transform = new TranslateTransform3D(x, y, z);
-                CubeBlocks.Children.Add(cubeVisual);
-            }
         }
 
         public List<Point3D> GetBlockPositions(params Model3DGroup[] cubeBlocks)
@@ -77,7 +70,7 @@ namespace WpfApp2.Handlers.Mouse
 
 
 
-        public void RemoveBlock(Viewport3D viewport, CameraHandlers camera, MapChunk map)
+        public void RemoveBlock(Viewport3D viewport, CameraHandlers camera)
         {
             Point3D Position = camera.playerCamera.Position;
             Point3D Target = camera.playerCamera.LookDirection + camera.playerCamera.Position;
@@ -92,7 +85,7 @@ namespace WpfApp2.Handlers.Mouse
             var geometry = meshBuilder.ToMesh();
             var cubeVisual = new GeometryModel3D(geometry, material);
             cubeVisual.Transform = new TranslateTransform3D(Target.X, Target.Y, Target.Z);
-            map.CubeInstances.Children.Remove(cubeVisual);
+
 
         }
 

@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Accord.Math" Version="3.8.0" />
     <PackageReference Include="HelixToolkit.Wpf" Version="2.23.0" />
   </ItemGroup>
 
