@@ -16,8 +16,8 @@ namespace WpfApp2.Handlers.MapGen
         private readonly int _numCubesY;
      
         private readonly map _map;
-        private readonly int _startnumCubesX;
-        private readonly int _starnumCubesY;
+        public readonly int _startnumCubesX;
+        public readonly int _starnumCubesY;
 
         public MapChunk(int numCubesX, int numCubesY,int startnumCubesX, int starnumCubesY, Vector3D lookDirection)
         {

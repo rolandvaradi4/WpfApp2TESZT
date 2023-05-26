@@ -99,7 +99,7 @@ namespace WpfApp2
         private void Timer_Tick(object sender, EventArgs e)
         {
 
-            Point3D newPosition = cameraHandler.playerCamera.Position - (2 * cameraHandler.playerCamera.LookDirection);
+            Point3D newPosition = cameraHandler.playerCamera.Position ;
 
             if (IsCameraAtMapEdge(newPosition))
             {
@@ -115,28 +115,23 @@ namespace WpfApp2
 
                 // Remove the non-visible map chunks from the children of the viewport
                 List<MapChunk> nonVisibleChunks = visibleMapChunks.Except(new List<MapChunk> { newMapChunk }).ToList();
-                foreach (var chunk in nonVisibleChunks)
+
+                viewport.Children.Cast<ModelVisual3D>()
+                    .Where(modelVisual => nonVisibleChunks.Any(chunk => modelVisual.Content == chunk.CubeInstances))
+                    .ToList()
+                    .ForEach(modelVisual => viewport.Children.Remove(modelVisual));
+
+                visibleMapChunks = visibleMapChunks.Except(nonVisibleChunks).ToList();
+
+                var modelVisualToRemove = viewport.Children
+                    .OfType<ModelVisual3D>()
+                    .FirstOrDefault(modelVisual => modelVisual.Content == mapChunk.CubeInstances);
+
+                if (modelVisualToRemove != null)
                 {
-                    foreach (var child in viewport.Children)
-                    {
-                        if (child is ModelVisual3D modelVisual && modelVisual.Content == chunk.CubeInstances)
-                        {
-                            viewport.Children.Remove(modelVisual);
-                            break;
-                        }
-                    }
-                    visibleMapChunks.Remove(chunk);
+                    viewport.Children.Remove(modelVisualToRemove);
                 }
 
-                // Remove the old map chunk from the children of the viewport
-                foreach (var child in viewport.Children)
-                {
-                    if (child is ModelVisual3D modelVisual && modelVisual.Content == mapChunk.CubeInstances)
-                    {
-                        viewport.Children.Remove(modelVisual);
-                        break;
-                    }
-                }
 
                 // Set the new map chunk as the current one
                 mapChunk = newMapChunk;
@@ -146,15 +141,10 @@ namespace WpfApp2
             currentPosition = newPosition;
 
             // Check if CubeBlocks are in the viewport.Children collection
-            bool cubeBlocksPresent = false;
-            foreach (var child in viewport.Children)
-            {
-                if (child is ModelVisual3D modelVisual && modelVisual.Content == blockClickHandler.CubeBlocks)
-                {
-                    cubeBlocksPresent = true;
-                    break;
-                }
-            }
+            bool cubeBlocksPresent = viewport.Children
+      .OfType<ModelVisual3D>()
+      .Any(modelVisual => modelVisual.Content == blockClickHandler.CubeBlocks);
+
 
             if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
@@ -193,16 +183,18 @@ namespace WpfApp2
             double mapSize = Math.Max(NumCubeX, NumCubeY);
             double halfMapSize = mapSize / 2.0;
 
-            if (cameraPosition.X < StartNumCubeX + halfMapSize ||
-                cameraPosition.X > StartNumCubeX + NumCubeX - halfMapSize ||
-                cameraPosition.Y < StartNumCubeY + halfMapSize ||
-                cameraPosition.Y > StartNumCubeY + NumCubeY - halfMapSize ||
-                (cameraPosition.X == 0 && cameraPosition.Y == 0))
-            {
-                return true;
-            }
+            double minX = mapChunk._startnumCubesX - 3;
+            double maxX = mapChunk._startnumCubesX + 10;
+            double minY = mapChunk._starnumCubesY -3 ;
+            double maxY = mapChunk._starnumCubesY +10;
 
-            return false;
+            bool atMapEdge = cameraPosition.X < minX ||
+                             cameraPosition.X > maxX ||
+                             cameraPosition.Y < minY ||
+                             cameraPosition.Y > maxY;
+
+            return atMapEdge || (cameraPosition.X == 0 && cameraPosition.Y == 0);
         }
+
     }
 }
