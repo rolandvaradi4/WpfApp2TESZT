@@ -29,7 +29,7 @@ namespace WpfApp2.Handlers.MapGen
             var transforms = new List<Transform3D>();
             if (lookDirection.X >= 0.463 && lookDirection.Y>= -0.82)  // +positionX
             {
-                tree.GenerateTree(startnumCubesX, startnumCubesY+10, startnumCubesX + numCubesX, startnumCubesY - numCubesY, 4);
+                tree.GenerateTree(startnumCubesX, startnumCubesY+10, startnumCubesX + numCubesX, startnumCubesY - numCubesY, 8);
                 for (int x = startnumCubesX ; x < startnumCubesX + numCubesX; x++)
                 {
                     for (int y = startnumCubesY + 10 ; y > startnumCubesY - numCubesY; y--)

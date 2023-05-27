@@ -27,14 +27,19 @@ namespace WpfApp2.Handlers.Mouse
             this.viewport = viewport; 
             this.camera = camera;
             this.map = map;
+            imagea = TextureID.Grass;
         }
-
+       public BitmapImage imagea;
+        public void SetTexture(BitmapImage image)
+        {
+            imagea = image;
+        }
         public void AddBlock(Viewport3D viewport, CameraHandlers camera, MapChunk map)
         {
             Point3D Position = camera.playerCamera.Position;
             Point3D Target = (camera.playerCamera.LookDirection) * 4 + camera.playerCamera.Position;
 
-            BitmapImage imagea = TextureID.Grass;
+            
             ImageBrush texture = new ImageBrush(imagea);
             // Create a material for the cube
             var material = new DiffuseMaterial(texture);

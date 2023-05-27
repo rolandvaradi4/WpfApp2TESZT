@@ -11,6 +11,8 @@ using WpfApp2.Handlers.MapGen;
 using WpfApp2.Handlers.Mouse;
 using WpfApp2.Handlers.TickRate;
 using WpfApp2.Models;
+using WpfApp2.Models.Menu;
+using WpfApp2.Models.Textures;
 
 namespace WpfApp2
 {
@@ -32,13 +34,25 @@ namespace WpfApp2
 
             // Hides the cursor when the window loads
             Cursor = Cursors.Cross;
+
         }
+
+        private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.E)
+            {
+                BlocksMenu blocksMenu = new BlocksMenu(TextureID.Grass, blockClickHandler);
+                blocksMenu.Show();
+            }
+        }
+
 
         public void HookUpEvents()
         {
             // Gets called when the window loads, will hook up events from the proper handlers to the actions.
             tickHandler.timer.Tick += Timer_Tick;
             MouseMove += cameraHandler.GameViewport_MouseMove;
+
 
         }
         public MainWindow()
@@ -48,6 +62,7 @@ namespace WpfApp2
             HookUpEvents();
 
         }
+        private BlockMenuHandler blockMenuHandler;
         public void Initialise()
         {
             List<Rect3D> cubeBoundingBoxes = new List<Rect3D>();
@@ -62,33 +77,13 @@ namespace WpfApp2
             cameraHandler = new CameraHandlers(this, tickHandler);
             blockClickHandler = new BlockClickHandler(viewport, cameraHandler, mapChunk);
            
-          
+
             Keyboard.Focus(this);
         }
 
 
-        private void Viewport_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            // Call the RemoveBlock method of BlockClickHandler
-
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                // Call the RemoveBlock method of BlockClickHandler
-                blockClickHandler.RemoveBlock(viewport, cameraHandler, mapChunk);
-            }
-
-        }
-
-        private void Viewport_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            // Call the AddBlock method of BlockClickHandler
-
-            if (e.RightButton == MouseButtonState.Pressed)
-            {
-                // Call the RemoveBlock method of BlockClickHandler
-                blockClickHandler.AddBlock(viewport, cameraHandler, mapChunk);
-            }
-        }
+      
+        
 
         public double StartNumCubeX = -10;
         public double StartNumCubeY = -10;
