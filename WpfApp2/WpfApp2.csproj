@@ -9,11 +9,23 @@
 
   <ItemGroup>
     <None Remove="Models\Textures\grass.png" />
+    <None Remove="Models\Textures\leaf.png" />
+    <None Remove="Models\Textures\stone.png" />
+    <None Remove="Models\Textures\tree.jpg" />
     <None Remove="wildgrass_2_ur_1024.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Models\Textures\grass.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Textures\leaf.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Textures\stone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Textures\tree.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

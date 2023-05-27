@@ -10,6 +10,7 @@ using WpfApp2.Handlers.Camera;
 using WpfApp2.Handlers.MapGen;
 using WpfApp2.Handlers.Mouse;
 using WpfApp2.Handlers.TickRate;
+using WpfApp2.Models;
 
 namespace WpfApp2
 {
@@ -60,6 +61,8 @@ namespace WpfApp2
             tickHandler = new TickHandler();
             cameraHandler = new CameraHandlers(this, tickHandler);
             blockClickHandler = new BlockClickHandler(viewport, cameraHandler, mapChunk);
+           
+          
             Keyboard.Focus(this);
         }
 
@@ -87,10 +90,10 @@ namespace WpfApp2
             }
         }
 
-        public int StartNumCubeX = 0;
-        public int StartNumCubeY = 0;
-        public int NumCubeX = 16;
-        public int NumCubeY = 16;
+        public double StartNumCubeX = -10;
+        public double StartNumCubeY = -10;
+        public int NumCubeX = 20;
+        public int NumCubeY = 20;
 
         public MapChunk mapChunk = new MapChunk(10, 10, 0, 0, Globals.PLAYER_CAMERA.LookDirection);
 
@@ -101,14 +104,14 @@ namespace WpfApp2
 
             Point3D newPosition = cameraHandler.playerCamera.Position;
 
-            if (IsCameraAtMapEdge(newPosition))
+            if (IsCameraAtMapEdge(newPosition, mapChunk, cameraHandler.playerCamera.LookDirection))
             {
                 // Calculate the start and end positions of the new map chunk
-                double startNumCubesX = newPosition.X;
-                double startNumCubesY = newPosition.Y;
+                 StartNumCubeX = newPosition.X;
+                 StartNumCubeY = newPosition.Y;
 
                 // Generate a new map chunk at the player's position
-                MapChunk newMapChunk = new MapChunk(NumCubeX, NumCubeY, (int)startNumCubesX, (int)startNumCubesY, cameraHandler.playerCamera.LookDirection);
+                MapChunk newMapChunk = new MapChunk(NumCubeX, NumCubeY, (int)StartNumCubeX, (int)StartNumCubeY, cameraHandler.playerCamera.LookDirection);
 
                 // Add the new map chunk to the children of the viewport
                 viewport.Children.Add(new ModelVisual3D { Content = newMapChunk.CubeInstances });
@@ -170,23 +173,40 @@ namespace WpfApp2
 
             viewport.InvalidateVisual(); // update the viewport content
         }
-        private bool IsCameraAtMapEdge(Point3D cameraPosition)
+        private bool IsCameraAtMapEdge(Point3D cameraPosition, MapChunk mapChunk , Vector3D lookDirection)
         {
-            double mapSize = Math.Max(NumCubeX, NumCubeY);
-            double halfMapSize = mapSize / 2.0;
+            double edgeThreshold = 2.0; // Adjust this value to change the threshold distance from the map's edge
+            double maxX = double.NegativeInfinity;
+            double maxY = double.NegativeInfinity;
+            double minX = double.PositiveInfinity;
+            double minY = double.PositiveInfinity;
+            foreach (var item in mapChunk.CubeInstances.Children)
+            {
+                if(item.Bounds.X> maxX)
+                {
+                    maxX = item.Bounds.X;
+                }
+                if (item.Bounds.Y > maxY)
+                {
+                    maxY = item.Bounds.Y;
+                }
+                if(item.Bounds.X<minX)
+                {
+                    minX = item.Bounds.X;
+                }
+                if (item.Bounds.Y < minY)
+                {
+                    minY = item.Bounds.Y;
+                }
+            }
+           
+            if (cameraPosition.X> maxX ||cameraPosition.X< minX ||cameraPosition.Y> maxY || cameraPosition.Y < minY || (cameraPosition.X==0 && cameraPosition.Y==0))
+            {
+               
+               return true;
+            }
 
-            double minX = mapChunk._startnumCubesX - 3;
-            double maxX = mapChunk._startnumCubesX + 10;
-            double minY = mapChunk._starnumCubesY - 3;
-            double maxY = mapChunk._starnumCubesY + 10;
-
-            bool atMapEdge = cameraPosition.X < minX ||
-                             cameraPosition.X > maxX ||
-                             cameraPosition.Y < minY ||
-                             cameraPosition.Y > maxY;
-
-            return atMapEdge || (cameraPosition.X == 0 && cameraPosition.Y == 0);
+            return false;
         }
-
     }
 }
