@@ -39,15 +39,10 @@ namespace WpfApp2.Handlers.Camera
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            //Gravitáció a playernek
             if (!CollisionDetection())
-                playerCamera.Position += -playerCamera.UpDirection * Globals.GravityRate;
-
-            //Escape-re bezár a program.
+                playerCamera.Position += -playerCamera.UpDirection * Globals.GRAVITY_RATE;
             if (Keyboard.IsKeyDown(Key.Escape))
                 mainWindow.Close();
-
-            //mozgásért felelős
             if (Keyboard.IsKeyDown(Key.W))
                 MoveCameraAsync(Key.W);
             if (Keyboard.IsKeyDown(Key.S))
@@ -80,9 +75,9 @@ namespace WpfApp2.Handlers.Camera
 
             Matrix3D rotationMatrix = new Matrix3D();
             // Rotate around the up vector (yaw)
-            rotationMatrix.Rotate(new System.Windows.Media.Media3D.Quaternion(playerCamera.UpDirection, -mouseDelta.X * Globals.CameraRotateSpeed));
+            rotationMatrix.Rotate(new System.Windows.Media.Media3D.Quaternion(playerCamera.UpDirection, -mouseDelta.X * Globals.CAMERA_ROTATE_SPEED));
             // Rotate around the right vector (pitch)
-            rotationMatrix.Rotate(new System.Windows.Media.Media3D.Quaternion(Vector3D.CrossProduct(playerCamera.UpDirection, playerCamera.LookDirection), mouseDelta.Y * Globals.CameraRotateSpeed));
+            rotationMatrix.Rotate(new System.Windows.Media.Media3D.Quaternion(Vector3D.CrossProduct(playerCamera.UpDirection, playerCamera.LookDirection), mouseDelta.Y * Globals.CAMERA_ROTATE_SPEED));
             // Apply the rotation matrix to the camera's LookDirection and UpDirection vectors
             playerCamera.LookDirection = rotationMatrix.Transform(playerCamera.LookDirection);
             mainWindow.MousePositionTextBlock.Text = playerCamera.GetInfo().ToString();
@@ -122,27 +117,27 @@ namespace WpfApp2.Handlers.Camera
             switch (key)
             {
                 case Key.W:
-
-                    playerCamera.Position += new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CameraMoveSpeed;
+                    
+                    playerCamera.Position += new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CAMERA_MOVE_SPEED;
                     break;
                 case Key.A:
                     
-                    playerCamera.Position -= Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CameraMoveSpeed;
-                    playerCamera.Position -= new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CameraMoveSpeed;
+                    playerCamera.Position -= Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
+                    playerCamera.Position -= new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CAMERA_MOVE_SPEED;
                     playerCamera.Position = (Point3D)new Vector3D(playerCamera.Position.X, playerCamera.Position.Y, Math.Round(playerCamera.Position.Z));
                     break;
                 case Key.S:
                     
-                    playerCamera.Position -= new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CameraMoveSpeed;
+                    playerCamera.Position -= new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CAMERA_MOVE_SPEED;
                     break;
                 case Key.D:
                     
-                    playerCamera.Position += Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CameraMoveSpeed;
-                    playerCamera.Position += new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CameraMoveSpeed;
+                    playerCamera.Position += Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
+                    playerCamera.Position += new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CAMERA_MOVE_SPEED;
                     playerCamera.Position = (Point3D)new Vector3D(playerCamera.Position.X, playerCamera.Position.Y, Math.Round(playerCamera.Position.Z));
                     break;
                 case Key.Space:
-                    playerCamera.Position += playerCamera.UpDirection * Globals.CameraMoveSpeed;
+                    playerCamera.Position += playerCamera.UpDirection * Globals.CAMERA_MOVE_SPEED;
                     break;
             }
         }

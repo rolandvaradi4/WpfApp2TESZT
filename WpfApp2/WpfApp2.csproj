@@ -8,23 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Models\Textures\bedrock.png" />
-    <None Remove="Models\Textures\dirt.png" />
     <None Remove="Models\Textures\grass.png" />
-    <None Remove="Models\Textures\stone.png" />
     <None Remove="wildgrass_2_ur_1024.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Models\Textures\bedrock.png">
+    <Content Include="Models\Textures\grass.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Models\Textures\dirt.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Models\Textures\grass.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -34,15 +25,6 @@
 
   <ItemGroup>
     <Folder Include="3dmodel\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Models\Textures\stone.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Models\Textures\wildgrass_2_ur_1024.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
 
 </Project>

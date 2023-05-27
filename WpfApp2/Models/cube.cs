@@ -9,41 +9,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
 using WpfApp2.Config;
-using WpfApp2.Handlers.MapGen;
 using WpfApp2.Models.Textures;
 
 namespace WpfApp2.Models
 {
     public class cube
     {
-        public ModelVisual3D visual;
-        BitmapImage textureImage = TextureID.Grass;
-        MeshGeometry3D mesh;
-        bool shouldItBeRendered = false;
-        public int[] coordinates;
-
-        public cube(BitmapImage textureImage,int x, int y, int z)
+        public ModelVisual3D Cube()
         {
-            coordinates = new int[] { x-1, y-1, z };
+            // Create the cube mesh
+            BitmapImage textureImage = TextureID.Grass;
+            MeshGeometry3D mesh = new MeshGeometry3D();
 
-            this.visual = new ModelVisual3D();
-            this.textureImage = textureImage;
-            this.mesh = GetMesh();
-
-            // Move the model to new coordinates
-            TranslateTransform3D translation = new TranslateTransform3D(x, y, z);
-            GeometryModel3D model = new GeometryModel3D(mesh, new DiffuseMaterial(new ImageBrush(textureImage)));
-            model.Transform= translation;
-            visual.Content= model;
-            
-
-        }
-
-        private MeshGeometry3D GetMesh()
-        {
-            MeshGeometry3D mesh_ = new MeshGeometry3D();
-            mesh_.Positions = new Point3DCollection(new Point3D[]
-           {
+            mesh.Positions = new Point3DCollection(new Point3D[]
+            {
                 new Point3D(-1, -1, 1),
                 new Point3D(1, -1, 1),
                 new Point3D(1, 1, 1),
@@ -52,8 +31,8 @@ namespace WpfApp2.Models
                 new Point3D(1, -1, -1),
                 new Point3D(1, 1, -1),
                 new Point3D(-1, 1, -1)
-           });
-            mesh_.TriangleIndices = new Int32Collection(new int[]
+            });
+            mesh.TriangleIndices = new Int32Collection(new int[]
             {
                 0, 1, 2, 2, 3, 0,
                 1, 5, 6, 6, 2, 1,
@@ -62,7 +41,7 @@ namespace WpfApp2.Models
                 3, 2, 6, 6, 7, 3,
                 4, 5, 1, 1, 0, 4
             });
-            mesh_.TextureCoordinates = new PointCollection(new Point[]
+            mesh.TextureCoordinates = new PointCollection(new Point[]
             {
                     // Front
                 new Point(0, 0),
@@ -101,7 +80,9 @@ namespace WpfApp2.Models
                 new Point(0, 0)
 
                      });
-            mesh_.Normals = new Vector3DCollection(new Vector3D[]
+
+
+            mesh.Normals = new Vector3DCollection(new Vector3D[]
             {
                 new Vector3D(0, 0, 1),
                 new Vector3D(0, 0, 1),
@@ -112,11 +93,9 @@ namespace WpfApp2.Models
                 new Vector3D(0, 0, -1),
                 new Vector3D(0, 0, -1)
             });
-            return mesh_;
-        }
-
-        public ModelVisual3D GetCube()
-        {
+            GeometryModel3D model = new GeometryModel3D(mesh, new DiffuseMaterial(new ImageBrush(textureImage)));
+            ModelVisual3D visual = new ModelVisual3D();
+            visual.Content = model;
             return visual;
         }
     }
