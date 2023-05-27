@@ -200,7 +200,7 @@ namespace WpfApp2
                 }
             }
            
-            if (cameraPosition.X> maxX ||cameraPosition.X< minX ||cameraPosition.Y> maxY || cameraPosition.Y < minY || (cameraPosition.X==0 && cameraPosition.Y==0))
+            if (cameraPosition.X > maxX+2 ||cameraPosition.X < minX || cameraPosition.Y > maxY+3 || cameraPosition.Y < minY || (cameraPosition.X==0 && cameraPosition.Y==0))
             {
                
                return true;
