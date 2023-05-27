@@ -11,7 +11,7 @@ using WpfApp2.Handlers.MapGen;
 using WpfApp2.Handlers.Mouse;
 using WpfApp2.Handlers.TickRate;
 using WpfApp2.Models;
-using WpfApp2.Models.Menu;
+
 using WpfApp2.Models.Textures;
 
 namespace WpfApp2
@@ -62,7 +62,7 @@ namespace WpfApp2
             HookUpEvents();
 
         }
-        private BlockMenuHandler blockMenuHandler;
+      
         public void Initialise()
         {
             List<Rect3D> cubeBoundingBoxes = new List<Rect3D>();
