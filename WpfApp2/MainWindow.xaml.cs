@@ -85,8 +85,8 @@ namespace WpfApp2
 
         public double StartNumCubeX = -10;
         public double StartNumCubeY = -10;
-        public int NumCubeX = 20;
-        public int NumCubeY = 20;
+        public int NumCubeX = 40;
+        public int NumCubeY = 40;
 
         public MapChunk mapChunk = new MapChunk(10, 10, 0, 0, Globals.PLAYER_CAMERA.LookDirection);
 

@@ -26,7 +26,7 @@
 
         </Viewport3D>
         <TextBlock Name="MousePositionTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"  FontSize="20" Width="685"/>
-        <WrapPanel x:Name="wrap" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <WrapPanel x:Name="wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent">
             
         </WrapPanel>
     </Grid>

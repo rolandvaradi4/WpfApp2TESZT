@@ -49,16 +49,25 @@ namespace WpfApp2.Models
 
         public void GenerateTree(int startX, int startY, int endX, int endY, int numTrees)
         {
-            double stepX = (endX - startX) / (double)numTrees;
-            double stepY = (endY - startY) / (double)numTrees;
+            int gridWidth = endX - startX;
+            int gridHeight = endY - startY;
 
-            for (int i = 0; i < numTrees; i++)
+            int stepX = gridWidth / numTrees;
+            int stepY = gridHeight / numTrees;
+
+            for (int row = 0; row < numTrees; row++)
             {
-                double x = startX + i * stepX;
-                double y = startY + i * stepY;
-                MakeTreemodel((int)x, (int)y);
+                for (int column = 0; column < numTrees; column++)
+                {
+                    int x = startX + row * stepX;
+                    int y = startY + column * stepY;
+                    MakeTreemodel(x, y);
+                }
             }
         }
+
+
+
         private void AddCube(Point3D position, ImageBrush texture, Model3DGroup parentModel)
         {
             var material = new DiffuseMaterial(texture);

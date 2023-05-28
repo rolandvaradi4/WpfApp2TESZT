@@ -49,6 +49,7 @@ namespace WpfApp2.Handlers.Camera
             if (e.Key == Key.E && !isWrapPanelCreated)
             {
                 CreateWrapPanel();
+                
                 isWrapPanelCreated = true;
             }
         }
