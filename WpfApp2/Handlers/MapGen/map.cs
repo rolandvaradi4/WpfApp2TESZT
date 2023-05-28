@@ -43,16 +43,19 @@ namespace WpfApp2.Handlers.MapGen
                     
                     }
                 }
-                _cubeInstances.Children.Add(tree.Tree3dMODEL);
+                foreach (var item in tree.Tree3dMODEL.Children)
+                {
+                    _cubeInstances.Children.Add(item);
+                }
             }
             else if (lookDirection.Y <= 0 && (lookDirection.X <=0.57 && lookDirection.X >=-0.65) ) // -positionY
             {  
                 tree.GenerateTree(startnumCubesX+10, startnumCubesY, startnumCubesX - numCubesX, startnumCubesY - numCubesY, 4);
-                for (int x = startnumCubesX +10 ; x > startnumCubesX - numCubesX  ; x--)
+                for (int x = startnumCubesX + 10; x > startnumCubesX - numCubesX; x--)
                 {
                     for (int y = startnumCubesY; y > startnumCubesY - numCubesY; y--)
                     {
-                      
+
                         var meshBuilder = new MeshBuilder();
                         meshBuilder.AddBox(new Point3D(0, 0, 0), 1, 1, 1);
                         var geometry = meshBuilder.ToMesh();
@@ -61,7 +64,12 @@ namespace WpfApp2.Handlers.MapGen
                         _cubeInstances.Children.Add(cubeVisual);
                     }
                 }
-                _cubeInstances.Children.Add(tree.Tree3dMODEL);
+
+                foreach (var item in tree.Tree3dMODEL.Children)
+                {
+                    _cubeInstances.Children.Add(item);
+                }
+                
             }
             else if (lookDirection.X <= 0 && lookDirection.Y <= 0.8 )  // -positionX
             {
@@ -78,7 +86,10 @@ namespace WpfApp2.Handlers.MapGen
                         _cubeInstances.Children.Add(cubeVisual);
                     }
                 }
-                _cubeInstances.Children.Add(tree.Tree3dMODEL);
+                foreach (var item in tree.Tree3dMODEL.Children)
+                {
+                    _cubeInstances.Children.Add(item);
+                }
             }
             else if (lookDirection.Y >= 0 && ( lookDirection.X<=0.5 && lookDirection.X>= -0.6 )) // +positionY
             {
@@ -96,7 +107,10 @@ namespace WpfApp2.Handlers.MapGen
 
                     }
                 }
-                _cubeInstances.Children.Add(tree.Tree3dMODEL);
+                foreach (var item in tree.Tree3dMODEL.Children)
+                {
+                    _cubeInstances.Children.Add(item);
+                }
             }
         }
 
