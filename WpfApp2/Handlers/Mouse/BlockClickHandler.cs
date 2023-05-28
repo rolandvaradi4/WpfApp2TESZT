@@ -106,12 +106,23 @@ namespace WpfApp2.Handlers.Mouse
             ModelVisual3D modelVisual3D = new ModelVisual3D();
             modelVisual3D.Content = cubeVisual;
             viewport.Children.Remove(modelVisual3D);
+
             int a = 0;
             foreach (var item in CubeBlocks.Children)
             {
                 if(item.Bounds.X == cubeVisual.Bounds.X && item.Bounds.Y == cubeVisual.Bounds.Y && item.Bounds.Z== cubeVisual.Bounds.Z)
                 {
                     CubeBlocks.Children.RemoveAt(a);
+                    break;
+                }
+                a++;
+            }
+            a = 0;
+            foreach (var item in map.CubeInstances.Children)
+            {
+                if (item.Bounds.X == cubeVisual.Bounds.X && item.Bounds.Y == cubeVisual.Bounds.Y && item.Bounds.Z == cubeVisual.Bounds.Z)
+                {
+                    map.CubeInstances.Children.RemoveAt(a);
                     break;
                 }
                 a++;
