@@ -146,8 +146,8 @@ namespace WpfApp2.Handlers.Camera
         {
             WrapPanel newWrapPanel = new WrapPanel
             {
-                Width = 200,
-                Height = 200,
+                Width = 500,
+                Height = 500,
                
             };
 
@@ -155,11 +155,21 @@ namespace WpfApp2.Handlers.Camera
             BitmapImage image2 = TextureID.Stone;
             BitmapImage image3 = TextureID.Tree;
             BitmapImage image4 = TextureID.Leaf;
+            BitmapImage image5 = TextureID.Dirt;
+            BitmapImage image6 = TextureID.Brick;
+            BitmapImage image7 = TextureID.Ice;
+            BitmapImage image8 = TextureID.Sand;
+            BitmapImage image9 = TextureID.Wood;
             AddImageToMenu(image1,newWrapPanel);
             AddImageToMenu(image2, newWrapPanel);
             AddImageToMenu(image3, newWrapPanel);
             AddImageToMenu(image4, newWrapPanel);
-         
+            AddImageToMenu(image5, newWrapPanel);
+            AddImageToMenu(image6, newWrapPanel);
+            AddImageToMenu(image7, newWrapPanel);
+            AddImageToMenu(image8, newWrapPanel);
+            AddImageToMenu(image9, newWrapPanel);
+
 
             wrapPanel.Children.Add(newWrapPanel);
 

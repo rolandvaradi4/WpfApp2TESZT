@@ -14,7 +14,11 @@ namespace WpfApp2.Models.Textures
         public static BitmapImage Tree = new BitmapImage(new Uri("pack://application:,,,/Models/Textures/tree.jpg", UriKind.RelativeOrAbsolute));
         public static BitmapImage Stone = new BitmapImage(new Uri("pack://application:,,,/Models/Textures/stone.png", UriKind.RelativeOrAbsolute));
         public static BitmapImage Leaf = new BitmapImage(new Uri("pack://application:,,,/Models/Textures/leaf.png", UriKind.RelativeOrAbsolute));
-
+        public static BitmapImage Brick = new BitmapImage(new Uri("pack://application:,,,/Models/Textures/Brick.jpg", UriKind.RelativeOrAbsolute));
+        public static BitmapImage Dirt = new BitmapImage(new Uri("pack://application:,,,/Models/Textures/dirt.png", UriKind.RelativeOrAbsolute));
+        public static BitmapImage Ice = new BitmapImage(new Uri("pack://application:,,,/Models/Textures/ice.jpg", UriKind.RelativeOrAbsolute));
+        public static BitmapImage Sand = new BitmapImage(new Uri("pack://application:,,,/Models/Textures/sand.jpg", UriKind.RelativeOrAbsolute));
+        public static BitmapImage Wood = new BitmapImage(new Uri("pack://application:,,,/Models/Textures/wood.jpg", UriKind.RelativeOrAbsolute));
 
     }
 }
