@@ -8,6 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Models\skybox.png" />
+    <None Remove="Models\skybox2.png" />
+    <None Remove="Models\skybox3.jpg" />
+    <None Remove="Models\skyboxBack.png" />
+    <None Remove="Models\skyboxBottom.png" />
+    <None Remove="Models\skyboxFront.png" />
+    <None Remove="Models\skyboxLeft.png" />
+    <None Remove="Models\skyboxRight.png" />
+    <None Remove="Models\skyboxTop.png" />
     <None Remove="Models\Textures\grass.png" />
     <None Remove="Models\Textures\leaf.png" />
     <None Remove="Models\Textures\stone.png" />
@@ -16,6 +25,33 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Models\skybox.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\skybox2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\skybox3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\skyboxBack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\skyboxBottom.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\skyboxFront.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\skyboxLeft.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\skyboxRight.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\skyboxTop.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Models\Textures\grass.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

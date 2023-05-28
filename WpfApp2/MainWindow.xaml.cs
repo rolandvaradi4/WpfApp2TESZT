@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Media3D;
 using WpfApp2.Config;
@@ -60,7 +61,8 @@ namespace WpfApp2
             HookUpEvents();
 
         }
-      
+        
+
         public void Initialise()
         {
             List<Rect3D> cubeBoundingBoxes = new List<Rect3D>();
@@ -72,7 +74,12 @@ namespace WpfApp2
             viewport.ClipToBounds = false;
             viewport.IsHitTestVisible = false;
             tickHandler = new TickHandler();
-           
+            Skybox skybox = new Skybox();
+            var skyboxModel = skybox.CreateSkybox();
+            ModelVisual3D skyboxVisual = new ModelVisual3D();
+            skyboxVisual.Content = skyboxModel;
+            viewport.Children.Add(skyboxVisual);
+
             blockClickHandler = new BlockClickHandler(viewport, cameraHandler, mapChunk);
             cameraHandler = new CameraHandlers(this, tickHandler,wrap,blockClickHandler);
 
