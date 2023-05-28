@@ -20,7 +20,7 @@ namespace WpfApp2.Handlers.Mouse
         CameraHandlers camera;
         MapChunk map;
         public readonly Model3DGroup CubeBlocks = new Model3DGroup();
-        public readonly Model3DGroup RemoveCubeBlocks = new Model3DGroup();
+      
 
         public BlockClickHandler(Viewport3D viewport, CameraHandlers camera, MapChunk map)
         {
@@ -50,9 +50,9 @@ namespace WpfApp2.Handlers.Mouse
             meshBuilder.AddBox(new Point3D(0, 0, 0), 1, 1, 1);
             var geometry = meshBuilder.ToMesh();
             var cubeVisual = new GeometryModel3D(geometry, material);
-            List<Point3D> allCubes = GetBlockPositions(map.CubeInstances, CubeBlocks).ToList();
+            List<Point3D> allCubes = GetBlockPositions(map.CubeInstances,CubeBlocks).ToList();
 
-            if (allCubes.Any(cube => cube.X == x || cube.Y == y || cube.Z == z))
+            if (!allCubes.Any(cube => cube.X == x && cube.Y == y && cube.Z == z))
             {
                 cubeVisual.Transform = new TranslateTransform3D(x, y, z);
                 CubeBlocks.Children.Add(cubeVisual);
@@ -102,7 +102,7 @@ namespace WpfApp2.Handlers.Mouse
             var geometry = meshBuilder.ToMesh();
             var cubeVisual = new GeometryModel3D(geometry, material);
             cubeVisual.Transform = new TranslateTransform3D(x, y, z);
-            RemoveCubeBlocks.Children.Add(cubeVisual);
+          
             ModelVisual3D modelVisual3D = new ModelVisual3D();
             modelVisual3D.Content = cubeVisual;
             viewport.Children.Remove(modelVisual3D);
