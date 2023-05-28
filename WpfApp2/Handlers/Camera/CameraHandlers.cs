@@ -14,6 +14,7 @@ using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
 using WpfApp2.Config;
 using WpfApp2.Handlers.MapGen;
+using WpfApp2.Handlers.Mouse;
 using WpfApp2.Handlers.TickRate;
 using WpfApp2.Models.Textures;
 
@@ -26,16 +27,81 @@ namespace WpfApp2.Handlers.Camera
         public PerspectiveCamera playerCamera;
         private Point lastMousePosition;
         private TickHandler tickHandler;
+        private WrapPanel wrapPanel;
+        private bool shouldUpdateCameraRotation;
+        BlockClickHandler blockClickHandler;
 
-        public CameraHandlers(MainWindow mainWindow, TickHandler tickHandler)
+        public CameraHandlers(MainWindow mainWindow, TickHandler tickHandler, WrapPanel wrapPanel, BlockClickHandler blockClickHandler)
         {
             this.mainWindow = mainWindow;
             this.viewport = mainWindow.viewport;
             playerCamera = Globals.PLAYER_CAMERA;
             this.tickHandler= tickHandler;
             tickHandler.timer.Tick += Timer_Tick;
+            this.wrapPanel = wrapPanel;
+            shouldUpdateCameraRotation = true;
+            this.blockClickHandler = blockClickHandler;
 
         }
+        private bool isWrapPanelCreated = false;
+        public void HandleKeyPress(KeyEventArgs e)
+        {
+            if (e.Key == Key.E && !isWrapPanelCreated)
+            {
+                CreateWrapPanel();
+                isWrapPanelCreated = true;
+            }
+        }
+
+        private void AddImageToMenu(BitmapImage image, WrapPanel wrapPanel)
+        {
+            Button button = new Button();
+            button.Width = 100;
+            button.Height = 100;
+            button.Click += (sender, e) => Button_Click1(sender, e, image);
+            var imageControl = new Image { Source = image };
+            imageControl.Stretch = System.Windows.Media.Stretch.UniformToFill;
+            button.Content = imageControl;
+            wrapPanel.Children.Add(button);
+
+
+        }
+        private void Button_Click1(object sender, RoutedEventArgs e, BitmapImage image)
+        {
+
+            blockClickHandler.SetTexture(image);
+            wrapPanel.Children.Clear();
+            shouldUpdateCameraRotation = true;
+            isWrapPanelCreated=false;
+
+
+        }
+        public void CreateWrapPanel()
+        {
+            WrapPanel newWrapPanel = new WrapPanel
+            {
+                Width = 200,
+                Height = 200,
+               
+            };
+
+            BitmapImage image1 = TextureID.Grass;
+            BitmapImage image2 = TextureID.Stone;
+            BitmapImage image3 = TextureID.Tree;
+            BitmapImage image4 = TextureID.Leaf;
+            AddImageToMenu(image1,newWrapPanel);
+            AddImageToMenu(image2, newWrapPanel);
+            AddImageToMenu(image3, newWrapPanel);
+            AddImageToMenu(image4, newWrapPanel);
+         
+
+            wrapPanel.Children.Add(newWrapPanel);
+
+            // Disable camera rotation when the wrap panel is created
+            shouldUpdateCameraRotation = false;
+        }
+
+
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
@@ -64,25 +130,27 @@ namespace WpfApp2.Handlers.Camera
 
         public void GameViewport_MouseMove(object sender, MouseEventArgs e)
         {
-            Point currentMousePos = e.GetPosition(mainWindow);
-            System.Windows.Vector mouseDelta = currentMousePos - lastMousePosition;
+            if (shouldUpdateCameraRotation)
+            {
+                Point currentMousePos = e.GetPosition(mainWindow);
+                System.Windows.Vector mouseDelta = currentMousePos - lastMousePosition;
 
-            // Reset the mouse position to the center of the window
-            Point center = new Point(mainWindow.ActualWidth / 2, mainWindow.ActualHeight / 2);
-            lastMousePosition = center;
-            Point screenCenter = mainWindow.PointToScreen(center);
-            SetCursorPos((int)screenCenter.X, (int)screenCenter.Y);
+                // Reset the mouse position to the center of the window
+                Point center = new Point(mainWindow.ActualWidth / 2, mainWindow.ActualHeight / 2);
+                lastMousePosition = center;
+                Point screenCenter = mainWindow.PointToScreen(center);
+                SetCursorPos((int)screenCenter.X, (int)screenCenter.Y);
 
-            Matrix3D rotationMatrix = new Matrix3D();
-            // Rotate around the up vector (yaw)
-            rotationMatrix.Rotate(new System.Windows.Media.Media3D.Quaternion(playerCamera.UpDirection, -mouseDelta.X * Globals.CAMERA_ROTATE_SPEED));
-            // Rotate around the right vector (pitch)
-            rotationMatrix.Rotate(new System.Windows.Media.Media3D.Quaternion(Vector3D.CrossProduct(playerCamera.UpDirection, playerCamera.LookDirection), mouseDelta.Y * Globals.CAMERA_ROTATE_SPEED));
-            // Apply the rotation matrix to the camera's LookDirection and UpDirection vectors
-            playerCamera.LookDirection = rotationMatrix.Transform(playerCamera.LookDirection);
-            mainWindow.MousePositionTextBlock.Text = playerCamera.GetInfo().ToString();
+                Matrix3D rotationMatrix = new Matrix3D();
+                // Rotate around the up vector (yaw)
+                rotationMatrix.Rotate(new System.Windows.Media.Media3D.Quaternion(playerCamera.UpDirection, -mouseDelta.X * Globals.CAMERA_ROTATE_SPEED));
+                // Rotate around the right vector (pitch)
+                rotationMatrix.Rotate(new System.Windows.Media.Media3D.Quaternion(Vector3D.CrossProduct(playerCamera.UpDirection, playerCamera.LookDirection), mouseDelta.Y * Globals.CAMERA_ROTATE_SPEED));
+                // Apply the rotation matrix to the camera's LookDirection and UpDirection vectors
+                playerCamera.LookDirection = rotationMatrix.Transform(playerCamera.LookDirection);
+                mainWindow.MousePositionTextBlock.Text = playerCamera.GetInfo().ToString();
 
-
+            }
         }
         public async Task RotateCameraAsync(double angle, Vector3D axis, Key key)
         {

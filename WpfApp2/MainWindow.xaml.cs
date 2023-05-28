@@ -39,11 +39,9 @@ namespace WpfApp2
 
         private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.E)
-            {
-                BlocksMenu blocksMenu = new BlocksMenu(TextureID.Grass, blockClickHandler);
-                blocksMenu.Show();
-            }
+            
+                cameraHandler.HandleKeyPress(e);
+            
         }
 
 
@@ -74,9 +72,9 @@ namespace WpfApp2
             viewport.ClipToBounds = false;
             viewport.IsHitTestVisible = false;
             tickHandler = new TickHandler();
-            cameraHandler = new CameraHandlers(this, tickHandler);
-            blockClickHandler = new BlockClickHandler(viewport, cameraHandler, mapChunk);
            
+            blockClickHandler = new BlockClickHandler(viewport, cameraHandler, mapChunk);
+            cameraHandler = new CameraHandlers(this, tickHandler,wrap,blockClickHandler);
 
             Keyboard.Focus(this);
         }
