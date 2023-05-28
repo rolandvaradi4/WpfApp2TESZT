@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Models\MainMenu.png" />
     <None Remove="Models\skybox.png" />
     <None Remove="Models\skybox2.png" />
     <None Remove="Models\skybox3.jpg" />
@@ -25,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Models\MainMenu.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Models\skybox.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

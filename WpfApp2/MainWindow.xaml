@@ -29,5 +29,10 @@
         <WrapPanel x:Name="wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent">
             
         </WrapPanel>
+
+        <StackPanel x:Name="StartMenuStack"    Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Window}}"
+                    Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Window}}">
+            
+        </StackPanel>
     </Grid>
 </Window>

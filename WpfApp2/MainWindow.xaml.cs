@@ -42,6 +42,7 @@ namespace WpfApp2
         {
             
                 cameraHandler.HandleKeyPress(e);
+            cameraHandler.HandleKeyPressExit(e);
             
         }
 
@@ -66,7 +67,8 @@ namespace WpfApp2
         public void Initialise()
         {
             List<Rect3D> cubeBoundingBoxes = new List<Rect3D>();
-
+           
+          
             // Initialize the camera
             // Access the PLAYER_CAMERA from the Globals class
             PerspectiveCamera playerCamera = Globals.PLAYER_CAMERA;
@@ -81,7 +83,7 @@ namespace WpfApp2
             viewport.Children.Add(skyboxVisual);
 
             blockClickHandler = new BlockClickHandler(viewport, cameraHandler, mapChunk);
-            cameraHandler = new CameraHandlers(this, tickHandler,wrap,blockClickHandler);
+            cameraHandler = new CameraHandlers(this, tickHandler,wrap,blockClickHandler, StartMenuStack);
 
             Keyboard.Focus(this);
         }

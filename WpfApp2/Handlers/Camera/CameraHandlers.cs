@@ -30,8 +30,8 @@ namespace WpfApp2.Handlers.Camera
         private WrapPanel wrapPanel;
         private bool shouldUpdateCameraRotation;
         BlockClickHandler blockClickHandler;
-
-        public CameraHandlers(MainWindow mainWindow, TickHandler tickHandler, WrapPanel wrapPanel, BlockClickHandler blockClickHandler)
+        public StackPanel startmenu;
+        public CameraHandlers(MainWindow mainWindow, TickHandler tickHandler, WrapPanel wrapPanel, BlockClickHandler blockClickHandler,StackPanel startmenu)
         {
             this.mainWindow = mainWindow;
             this.viewport = mainWindow.viewport;
@@ -41,7 +41,71 @@ namespace WpfApp2.Handlers.Camera
             this.wrapPanel = wrapPanel;
             shouldUpdateCameraRotation = true;
             this.blockClickHandler = blockClickHandler;
+            this.startmenu = startmenu;
+            StartMenuStack();
 
+        }
+
+        string StartOrResume = "Start Game";
+       
+     
+        public void StartMenuStack()
+        {
+            
+            
+
+            Button startGameButton = new Button();
+            startGameButton.Content = StartOrResume;
+            startGameButton.Click += StartGameButton_Click;
+            startGameButton.Margin = new Thickness(10,200,10,10);  
+            startGameButton.Width = 150;
+            startGameButton.Height = 50;
+            startGameButton.VerticalAlignment = VerticalAlignment.Center;
+            startGameButton.HorizontalAlignment = HorizontalAlignment.Center;
+            BitmapImage image;
+            if (StartOrResume == "Start Game")
+            {
+                image = new BitmapImage(new Uri("pack://application:,,,/Models/MainMenu.png", UriKind.RelativeOrAbsolute));
+                ImageBrush backgroundBrush = new ImageBrush(image);
+                startmenu.Background = backgroundBrush;
+            }
+
+            Button exitButton = new Button();
+            exitButton.Content = "Exit";
+            exitButton.Click += ExitButton_Click;
+            exitButton.Margin = new Thickness(10);
+            exitButton.HorizontalAlignment = HorizontalAlignment.Center;
+            exitButton.VerticalAlignment = VerticalAlignment.Center;
+            exitButton.Width = 150;
+            exitButton.Height = 50;
+
+            startmenu.Children.Add(startGameButton);
+            startmenu.Children.Add(exitButton);
+            shouldUpdateCameraRotation = false;
+        }
+
+        private void StartGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            startmenu.Children.Clear();
+            shouldUpdateCameraRotation = true;
+            isStackPanelCreated = false;
+            StartOrResume = "Resume";
+            startmenu.Background = null;
+        }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+        
+        private bool isStackPanelCreated = false;
+        public void HandleKeyPressExit(KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape && !isStackPanelCreated)
+            {
+                StartMenuStack();
+                isStackPanelCreated = true;
+            }
         }
         private bool isWrapPanelCreated = false;
         public void HandleKeyPress(KeyEventArgs e)
@@ -53,6 +117,7 @@ namespace WpfApp2.Handlers.Camera
                 isWrapPanelCreated = true;
             }
         }
+        
 
         private void AddImageToMenu(BitmapImage image, WrapPanel wrapPanel)
         {
@@ -108,8 +173,6 @@ namespace WpfApp2.Handlers.Camera
         {
             if (!CollisionDetection())
                 playerCamera.Position += -playerCamera.UpDirection * Globals.GRAVITY_RATE;
-            if (Keyboard.IsKeyDown(Key.Escape))
-                mainWindow.Close();
             if (Keyboard.IsKeyDown(Key.W))
                 MoveCameraAsync(Key.W);
             if (Keyboard.IsKeyDown(Key.S))
@@ -183,31 +246,34 @@ namespace WpfApp2.Handlers.Camera
         {
             PerspectiveCamera playerCamera = Globals.PLAYER_CAMERA;
             mainWindow.MousePositionTextBlock.Text = playerCamera.GetInfo().ToString();
-            switch (key)
+            if (shouldUpdateCameraRotation)
             {
-                case Key.W:
-                    
-                    playerCamera.Position += new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CAMERA_MOVE_SPEED;
-                    break;
-                case Key.A:
-                    
-                    playerCamera.Position -= Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
-                    playerCamera.Position -= new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CAMERA_MOVE_SPEED;
-                    playerCamera.Position = (Point3D)new Vector3D(playerCamera.Position.X, playerCamera.Position.Y, Math.Round(playerCamera.Position.Z));
-                    break;
-                case Key.S:
-                    
-                    playerCamera.Position -= new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CAMERA_MOVE_SPEED;
-                    break;
-                case Key.D:
-                    
-                    playerCamera.Position += Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
-                    playerCamera.Position += new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CAMERA_MOVE_SPEED;
-                    playerCamera.Position = (Point3D)new Vector3D(playerCamera.Position.X, playerCamera.Position.Y, Math.Round(playerCamera.Position.Z));
-                    break;
-                case Key.Space:
-                    playerCamera.Position += playerCamera.UpDirection * Globals.CAMERA_MOVE_SPEED;
-                    break;
+                switch (key)
+                {
+                    case Key.W:
+
+                        playerCamera.Position += new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CAMERA_MOVE_SPEED;
+                        break;
+                    case Key.A:
+
+                        playerCamera.Position -= Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
+                        playerCamera.Position -= new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CAMERA_MOVE_SPEED;
+                        playerCamera.Position = (Point3D)new Vector3D(playerCamera.Position.X, playerCamera.Position.Y, Math.Round(playerCamera.Position.Z));
+                        break;
+                    case Key.S:
+
+                        playerCamera.Position -= new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CAMERA_MOVE_SPEED;
+                        break;
+                    case Key.D:
+
+                        playerCamera.Position += Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
+                        playerCamera.Position += new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CAMERA_MOVE_SPEED;
+                        playerCamera.Position = (Point3D)new Vector3D(playerCamera.Position.X, playerCamera.Position.Y, Math.Round(playerCamera.Position.Z));
+                        break;
+                    case Key.Space:
+                        playerCamera.Position += playerCamera.UpDirection * Globals.CAMERA_MOVE_SPEED;
+                        break;
+                }
             }
         }
 
