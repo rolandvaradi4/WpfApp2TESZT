@@ -35,6 +35,8 @@ namespace WpfApp2.Handlers.Camera
         private bool shouldUpdateCameraRotation;
         BlockClickHandler blockClickHandler;
         public StackPanel startmenu;
+        bool isJumping = false;
+        int jumpCooldown;
         public CameraHandlers(MainWindow mainWindow, TickHandler tickHandler, WrapPanel wrapPanel, BlockClickHandler blockClickHandler,StackPanel startmenu)
         {
             this.mainWindow = mainWindow;
@@ -189,6 +191,11 @@ namespace WpfApp2.Handlers.Camera
         {
             if (!CollisionDetection())
                 playerCamera.Position += -playerCamera.UpDirection * Globals.GRAVITY_RATE;
+            else
+            { 
+                isJumping = false;
+                jumpCooldown = 10;
+            }
             if (Keyboard.IsKeyDown(Key.W))
                 MoveCameraAsync(Key.W);
             if (Keyboard.IsKeyDown(Key.S))
@@ -198,8 +205,15 @@ namespace WpfApp2.Handlers.Camera
             if (Keyboard.IsKeyDown(Key.D))
                 MoveCameraAsync(Key.D);
             if (Keyboard.IsKeyDown(Key.Space))
+            {
+                isJumping = true;
+                
+            }
+            if (isJumping && jumpCooldown>=0)
+            {
+                jumpCooldown--;
                 MoveCameraAsync(Key.Space);
-
+            }
         }
 
         [DllImport("user32.dll")]
@@ -289,7 +303,6 @@ namespace WpfApp2.Handlers.Camera
                         break;
                     case Key.Space:
                         playerCamera.Position += playerCamera.UpDirection * Globals.CAMERA_MOVE_SPEED;
-                       
                         break;
     
                 }
