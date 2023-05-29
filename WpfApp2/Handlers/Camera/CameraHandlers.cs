@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,11 +13,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
+using Accord.Math;
 using HelixToolkit.Wpf;
 using WpfApp2.Config;
 using WpfApp2.Handlers.MapGen;
 using WpfApp2.Handlers.Mouse;
 using WpfApp2.Handlers.TickRate;
+using WpfApp2.Models.Sound;
 using WpfApp2.Models.Textures;
 
 namespace WpfApp2.Handlers.Camera
@@ -90,6 +94,8 @@ namespace WpfApp2.Handlers.Camera
             shouldUpdateCameraRotation = true;
             isStackPanelCreated = false;
             StartOrResume = "Resume";
+           
+
             startmenu.Background = null;
         }
 
@@ -258,14 +264,14 @@ namespace WpfApp2.Handlers.Camera
             mainWindow.MousePositionTextBlock.Text = playerCamera.GetInfo().ToString();
             if (shouldUpdateCameraRotation)
             {
+                bool isWalking = false;
                 switch (key)
                 {
                     case Key.W:
 
-                        playerCamera.Position += new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CAMERA_MOVE_SPEED;
+                        playerCamera.Position += new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CAMERA_MOVE_SPEED;     
                         break;
                     case Key.A:
-
                         playerCamera.Position -= Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
                         playerCamera.Position -= new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CAMERA_MOVE_SPEED;
                         playerCamera.Position = (Point3D)new Vector3D(playerCamera.Position.X, playerCamera.Position.Y, Math.Round(playerCamera.Position.Z));
@@ -279,16 +285,16 @@ namespace WpfApp2.Handlers.Camera
                         playerCamera.Position += Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
                         playerCamera.Position += new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CAMERA_MOVE_SPEED;
                         playerCamera.Position = (Point3D)new Vector3D(playerCamera.Position.X, playerCamera.Position.Y, Math.Round(playerCamera.Position.Z));
+                      
                         break;
                     case Key.Space:
                         playerCamera.Position += playerCamera.UpDirection * Globals.CAMERA_MOVE_SPEED;
+                       
                         break;
+    
                 }
             }
         }
-
-
-
         public bool CollisionDetection()
         {
             return mainWindow.viewport.Children

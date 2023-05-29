@@ -15,6 +15,9 @@
     <None Remove="Models\skyboxLeft.png" />
     <None Remove="Models\skyboxRight.png" />
     <None Remove="Models\skyboxTop.png" />
+    <None Remove="Models\Sound\AddSound.wav" />
+    <None Remove="Models\Sound\ButtonSound.wav" />
+    <None Remove="Models\Sound\RemoveSound.wav" />
     <None Remove="Models\Textures\Brick.jpg" />
     <None Remove="Models\Textures\dirt.png" />
     <None Remove="Models\Textures\grass.png" />
@@ -48,6 +51,12 @@
     </Content>
     <Content Include="Models\skyboxTop.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Sound\AddSound.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Sound\RemoveSound.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Models\Textures\Brick.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -85,6 +94,18 @@
 
   <ItemGroup>
     <Folder Include="3dmodel\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Models\Sound\ButtonSound.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Models\Sound\Walking2.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

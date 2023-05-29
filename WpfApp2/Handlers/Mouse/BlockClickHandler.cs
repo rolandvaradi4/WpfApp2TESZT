@@ -11,6 +11,9 @@ using System.Windows.Media.Media3D;
 using WpfApp2.Handlers.Camera;
 using WpfApp2.Handlers.MapGen;
 using WpfApp2.Models.Textures;
+using WpfApp2.Models.Sound;
+using System.Threading;
+using System.Media;
 
 namespace WpfApp2.Handlers.Mouse
 {
@@ -56,8 +59,13 @@ namespace WpfApp2.Handlers.Mouse
             {
                 cubeVisual.Transform = new TranslateTransform3D(x, y, z);
                 CubeBlocks.Children.Add(cubeVisual);
+
             }
+           
+          
         }
+
+     
 
         public List<Point3D> GetBlockPositions(params Model3DGroup[] cubeBlocks)
         {
@@ -127,6 +135,7 @@ namespace WpfApp2.Handlers.Mouse
                 }
                 a++;
             }
+        
 
         }
 

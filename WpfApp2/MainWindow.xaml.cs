@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,7 +14,7 @@ using WpfApp2.Handlers.MapGen;
 using WpfApp2.Handlers.Mouse;
 using WpfApp2.Handlers.TickRate;
 using WpfApp2.Models;
-
+using WpfApp2.Models.Sound;
 using WpfApp2.Models.Textures;
 
 namespace WpfApp2
@@ -38,14 +40,71 @@ namespace WpfApp2
 
         }
 
-        private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        private  async void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             
                 cameraHandler.HandleKeyPress(e);
             cameraHandler.HandleKeyPressExit(e);
-            
+            switch (e.Key)
+            {
+                case Key.W:
+                    await PlaySound(SoundID.Walk);
+                    break;
+                case Key.A:
+                    await PlaySound(SoundID.Walk);
+                    break;
+                case Key.S:
+                    await PlaySound(SoundID.Walk);
+                    break;
+                case Key.D:
+                    await PlaySound(SoundID.Walk);
+                    break;
+            }
+        }
+        private async void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {          
+              await PlaySound( SoundID.Remove);  
+            }
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+               await PlaySound( SoundID.Add);
+            }
         }
 
+
+        private bool soundPlaying = false;
+        private bool soundPlayingClick = false;
+        private async Task PlaySound( SoundPlayer ID)
+        {
+            
+                if (!soundPlayingClick)
+                {
+                    soundPlayingClick = true;
+                    if(ID == SoundID.Remove)
+                    {
+                        ID.PlayLooping();
+                        await Task.Delay(1500);
+                    }
+                    else if( ID == SoundID.Walk)
+                    {
+                        ID.PlayLooping();
+                        await Task.Delay(2500);
+                    }
+                    else
+                    {
+                    ID.PlayLooping();
+                    await Task.Delay(1000);
+                    } 
+                    
+
+                    ID.Stop();
+                    soundPlayingClick = false;
+                }
+            
+
+        }
 
         public void HookUpEvents()
         {
@@ -84,13 +143,14 @@ namespace WpfApp2
 
             blockClickHandler = new BlockClickHandler(viewport, cameraHandler, mapChunk);
             cameraHandler = new CameraHandlers(this, tickHandler,wrap,blockClickHandler, StartMenuStack);
+         
 
             Keyboard.Focus(this);
         }
+       
 
 
-      
-        
+
 
         public double StartNumCubeX = -10;
         public double StartNumCubeY = -10;
@@ -159,17 +219,19 @@ namespace WpfApp2
                 // Remove CubeBlocks from the viewport if they are present
 
                 viewport.Children.Remove(new ModelVisual3D { Content = blockClickHandler.CubeBlocks });
+               
 
             }
             else if (Mouse.RightButton == MouseButtonState.Pressed)
             {
                 // Call the AddBlock method of BlockClickHandler
                 blockClickHandler.AddBlock(viewport, cameraHandler, mapChunk);
-
+                
                 // Add CubeBlocks to the viewport if they are not present
                 if (!cubeBlocksPresent)
                 {
                     viewport.Children.Add(new ModelVisual3D { Content = blockClickHandler.CubeBlocks });
+                    
                 }
             }
 
@@ -210,5 +272,7 @@ namespace WpfApp2
 
             return false;
         }
+
+        
     }
 }
