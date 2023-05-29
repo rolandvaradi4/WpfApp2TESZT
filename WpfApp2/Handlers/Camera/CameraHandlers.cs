@@ -71,7 +71,7 @@ namespace WpfApp2.Handlers.Camera
             BitmapImage image;
             if (StartOrResume == "Start Game")
             {
-                image = new BitmapImage(new Uri("pack://application:,,,/Models/MainMenu.png", UriKind.RelativeOrAbsolute));
+                image = new BitmapImage(new Uri("pack://application:,,,/Models/MainMenuWpf.png", UriKind.RelativeOrAbsolute));
                 ImageBrush backgroundBrush = new ImageBrush(image);
                 startmenu.Background = backgroundBrush;
             }
@@ -242,7 +242,7 @@ namespace WpfApp2.Handlers.Camera
                 rotationMatrix.Rotate(new System.Windows.Media.Media3D.Quaternion(Vector3D.CrossProduct(playerCamera.UpDirection, playerCamera.LookDirection), mouseDelta.Y * Globals.CAMERA_ROTATE_SPEED));
                 // Apply the rotation matrix to the camera's LookDirection and UpDirection vectors
                 playerCamera.LookDirection = rotationMatrix.Transform(playerCamera.LookDirection);
-                mainWindow.MousePositionTextBlock.Text = playerCamera.GetInfo().ToString();
+                //mainWindow.MousePositionTextBlock.Text = playerCamera.GetInfo().ToString();
 
             }
         }
@@ -275,7 +275,7 @@ namespace WpfApp2.Handlers.Camera
         private async Task MoveCameraAsync(Key key)
         {
             PerspectiveCamera playerCamera = Globals.PLAYER_CAMERA;
-            mainWindow.MousePositionTextBlock.Text = playerCamera.GetInfo().ToString();
+            //mainWindow.MousePositionTextBlock.Text = playerCamera.GetInfo().ToString();
             if (shouldUpdateCameraRotation)
             {
                 bool isWalking = false;
@@ -363,18 +363,22 @@ namespace WpfApp2.Handlers.Camera
                     return ComputeBoundingBox(corners);
                 });
 
-            // Compute the union of all bounds using Aggregate
-            bounds = geometryBounds.Aggregate(Rect3D.Union);
+            // Compute the union of all bounds
+            foreach (var geometryBound in geometryBounds)
+            {
+                bounds = UnionRect3D(bounds, geometryBound);
+            }
 
-            // Recursively compute bounds of all child ModelVisual3D objects using Aggregate
-            bounds = modelVisual.Children
-                .OfType<ModelVisual3D>()
-                .Select(childVisual => GetModelBoundsRecursive(childVisual, childVisual.Transform))
-                .Aggregate(bounds, Rect3D.Union);
+            // Recursively compute bounds of all child ModelVisual3D objects
+            foreach (var childVisual in modelVisual.Children.OfType<ModelVisual3D>())
+            {
+                var childTransform = childVisual.Transform;
+                var childBounds = GetModelBoundsRecursive(childVisual, childTransform);
+                bounds = UnionRect3D(bounds, childBounds);
+            }
 
             return bounds;
         }
-
 
         private Rect3D UnionRect3D(Rect3D rect1, Rect3D rect2)
         {
@@ -394,16 +398,26 @@ namespace WpfApp2.Handlers.Camera
         }
         private Rect3D ComputeBoundingBox(Point3D[] corners)
         {
-            double minX = corners.Min(corner => corner.X);
-            double minY = corners.Min(corner => corner.Y);
-            double minZ = corners.Min(corner => corner.Z);
-            double maxX = corners.Max(corner => corner.X);
-            double maxY = corners.Max(corner => corner.Y);
-            double maxZ = corners.Max(corner => corner.Z);
+            double minX = double.PositiveInfinity;
+            double minY = double.PositiveInfinity;
+            double minZ = double.PositiveInfinity;
+            double maxX = double.NegativeInfinity;
+            double maxY = double.NegativeInfinity;
+            double maxZ = double.NegativeInfinity;
+
+            for (int i = 0; i < corners.Length; i++)
+            {
+                Point3D corner = corners[i];
+                minX = Math.Min(minX, corner.X);
+                minY = Math.Min(minY, corner.Y);
+                minZ = Math.Min(minZ, corner.Z);
+                maxX = Math.Max(maxX, corner.X);
+                maxY = Math.Max(maxY, corner.Y);
+                maxZ = Math.Max(maxZ, corner.Z);
+            }
 
             return new Rect3D(minX, minY, minZ, maxX - minX, maxY - minY, maxZ - minZ);
         }
-
 
         private Point3D[] GetBoundingBoxCorners(Rect3D rect)
         {

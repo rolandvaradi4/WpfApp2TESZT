@@ -59,6 +59,7 @@ namespace WpfApp2
                 case Key.D:
                     await PlaySound(SoundID.Walk);
                     break;
+                
             }
         }
         private async void Window_MouseDown(object sender, MouseButtonEventArgs e)
