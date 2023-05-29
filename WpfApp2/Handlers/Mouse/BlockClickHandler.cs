@@ -40,7 +40,16 @@ namespace WpfApp2.Handlers.Mouse
         public void AddBlock(Viewport3D viewport, CameraHandlers camera, MapChunk map)
         {
             Point3D Position = camera.playerCamera.Position;
-            Point3D Target = (camera.playerCamera.LookDirection) * 4 + camera.playerCamera.Position;
+            double Target2 = (double)camera.playerCamera.LookDirection.Z;
+            if (Target2 >= 0)
+            {
+                Target2 = 4;
+            }
+            else if(Target2<0)
+            {
+                Target2 = 2;
+            }
+            Point3D Target = (camera.playerCamera.LookDirection) * Target2 + camera.playerCamera.Position;
 
             
             ImageBrush texture = new ImageBrush(imagea);
@@ -94,7 +103,16 @@ namespace WpfApp2.Handlers.Mouse
         public void RemoveBlock(Viewport3D viewport, CameraHandlers camera, MapChunk map)
         {
             Point3D Position = camera.playerCamera.Position;
-            Point3D Target = (camera.playerCamera.LookDirection) * 4 + camera.playerCamera.Position;
+            double Target2 = (double)camera.playerCamera.LookDirection.Z;
+            if (Target2 >= 0)
+            {
+                Target2 = 4;
+            }
+            else if (Target2 < 0)
+            {
+                Target2 = 2;
+            }
+            Point3D Target = (camera.playerCamera.LookDirection) * Target2 + camera.playerCamera.Position;
 
 
             BitmapImage imagea = TextureID.Grass;
