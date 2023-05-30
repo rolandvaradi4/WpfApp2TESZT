@@ -56,15 +56,8 @@ namespace WpfApp2.Handlers.Mouse
             var geometry = meshBuilder.ToMesh();
             GeometryModel3D cubeVisual = new GeometryModel3D(geometry, material);
             List<Point3D> allCubes = GetBlockPositions(map.CubeInstances,CubeBlocks).ToList();
-            if (imagea == TextureID.Diamond)
-            {
-                SpotLight spotlight = new SpotLight();
-                spotlight.Color = Colors.White;
-                spotlight.InnerConeAngle = 20;
-                spotlight.OuterConeAngle = 40;
-
-               
-            }
+           
+          
 
 
             if (!allCubes.Any(cube => cube.X == x && cube.Y == y && cube.Z == z))
