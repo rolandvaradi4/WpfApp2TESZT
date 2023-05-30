@@ -20,6 +20,7 @@
     <None Remove="Models\Textures\Brick.jpg" />
     <None Remove="Models\Textures\diamond.jpg" />
     <None Remove="Models\Textures\dirt.png" />
+    <None Remove="Models\Textures\glowStone.png" />
     <None Remove="Models\Textures\grass.png" />
     <None Remove="Models\Textures\ice.jpg" />
     <None Remove="Models\Textures\leaf.png" />
@@ -62,6 +63,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Models\Textures\dirt.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Textures\glowStone.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Models\Textures\grass.png">

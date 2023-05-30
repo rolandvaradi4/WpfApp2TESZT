@@ -84,6 +84,19 @@ namespace WpfApp2.Handlers.Mouse
 
                 }
 
+                if (imagea == TextureID.GlowStone)
+                {
+                    SpotLight spotlight = new SpotLight();
+                    spotlight.Color = Colors.Yellow;
+                    spotlight.InnerConeAngle = 200;
+                    spotlight.OuterConeAngle = 400;
+                    spotlight.Direction = new Vector3D(1, 1, 1);
+                    spotlight.Position = new Point3D(x, y, z);
+                    ModelVisual3D modelVisual3D = new ModelVisual3D();
+                    modelVisual3D.Content = spotlight;
+                    viewport.Children.Add(modelVisual3D);
+
+                }
                 CubeBlocks.Children.Add(cubeVisual);
                 await Task.Delay(1500);
             }

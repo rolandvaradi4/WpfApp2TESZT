@@ -20,6 +20,7 @@ namespace WpfApp2.Models.Textures
         public static BitmapImage Sand = new BitmapImage(new Uri("pack://application:,,,/Models/Textures/sand.jpg", UriKind.RelativeOrAbsolute));
         public static BitmapImage Wood = new BitmapImage(new Uri("pack://application:,,,/Models/Textures/wood.jpg", UriKind.RelativeOrAbsolute));
         public static BitmapImage Diamond = new BitmapImage(new Uri("pack://application:,,,/Models/Textures/diamond.jpg", UriKind.RelativeOrAbsolute));
+        public static BitmapImage GlowStone = new BitmapImage(new Uri("pack://application:,,,/Models/Textures/GlowStone.png", UriKind.RelativeOrAbsolute));
 
     }
 }
