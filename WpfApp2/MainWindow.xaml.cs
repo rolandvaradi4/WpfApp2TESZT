@@ -190,6 +190,7 @@ namespace WpfApp2
         {
 
             Point3D newPosition = cameraHandler.playerCamera.Position;
+           
 
             if (IsCameraAtMapEdge(newPosition, mapChunk, cameraHandler.playerCamera.LookDirection))
             {
@@ -285,7 +286,7 @@ namespace WpfApp2
                 }
             }
            
-            if (cameraPosition.X > maxX+1 ||cameraPosition.X < minX || cameraPosition.Y > maxY+1 || cameraPosition.Y < minY || (cameraPosition.X==0 && cameraPosition.Y==0 && start==true))
+            if (cameraPosition.X > maxX ||cameraPosition.X < minX || cameraPosition.Y > maxY || cameraPosition.Y < minY || (cameraPosition.X==0 && cameraPosition.Y==0 && start==true))
             {
                 start = false;
                return true;

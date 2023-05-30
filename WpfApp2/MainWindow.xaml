@@ -15,8 +15,9 @@
 
 
 
-                        <DirectionalLight Color="White" Direction="-1,-1,-1"/>
-                        <DirectionalLight Color="White" Direction="1,1,1"/>
+                        <DirectionalLight  Color="White" Direction="1,1,1" />
+                        <DirectionalLight  Color="White" Direction="-1,-1,-1" />
+
                     </Model3DGroup>
                 </ModelVisual3D.Content>
             </ModelVisual3D>
@@ -29,7 +30,9 @@
             
         </WrapPanel>
 
-        <StackPanel x:Name="StartMenuStack" >
+        
+
+            <StackPanel x:Name="StartMenuStack" >
             
         </StackPanel>
     </Grid>

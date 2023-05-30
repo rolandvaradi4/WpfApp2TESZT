@@ -54,12 +54,36 @@ namespace WpfApp2.Handlers.Mouse
             var meshBuilder = new MeshBuilder();
             meshBuilder.AddBox(new Point3D(0, 0, 0), 1, 1, 1);
             var geometry = meshBuilder.ToMesh();
-            var cubeVisual = new GeometryModel3D(geometry, material);
+            GeometryModel3D cubeVisual = new GeometryModel3D(geometry, material);
             List<Point3D> allCubes = GetBlockPositions(map.CubeInstances,CubeBlocks).ToList();
+            if (imagea == TextureID.Diamond)
+            {
+                SpotLight spotlight = new SpotLight();
+                spotlight.Color = Colors.White;
+                spotlight.InnerConeAngle = 20;
+                spotlight.OuterConeAngle = 40;
+
+               
+            }
+
 
             if (!allCubes.Any(cube => cube.X == x && cube.Y == y && cube.Z == z))
             {
                 cubeVisual.Transform = new TranslateTransform3D(x, y, z);
+                if (imagea == TextureID.Diamond)
+                {
+                    SpotLight spotlight = new SpotLight();
+                    spotlight.Color = Colors.LightBlue;
+                    spotlight.InnerConeAngle = 200;
+                    spotlight.OuterConeAngle = 400;
+                    spotlight.Direction = new Vector3D(1, 1, 1);
+                    spotlight.Position = new Point3D(x, y, z);
+                    ModelVisual3D modelVisual3D = new ModelVisual3D();
+                    modelVisual3D.Content = spotlight;
+                    viewport.Children.Add(modelVisual3D);
+
+                }
+
                 CubeBlocks.Children.Add(cubeVisual);
                 await Task.Delay(1500);
             }

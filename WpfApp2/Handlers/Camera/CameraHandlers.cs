@@ -163,6 +163,7 @@ namespace WpfApp2.Handlers.Camera
             BitmapImage image7 = TextureID.Ice;
             BitmapImage image8 = TextureID.Sand;
             BitmapImage image9 = TextureID.Wood;
+            BitmapImage image10 = TextureID.Diamond;
             AddImageToMenu(image1, newWrapPanel);
             AddImageToMenu(image2, newWrapPanel);
             AddImageToMenu(image3, newWrapPanel);
@@ -172,6 +173,8 @@ namespace WpfApp2.Handlers.Camera
             AddImageToMenu(image7, newWrapPanel);
             AddImageToMenu(image8, newWrapPanel);
             AddImageToMenu(image9, newWrapPanel);
+            AddImageToMenu(image10,newWrapPanel);
+
 
 
             wrapPanel.Children.Add(newWrapPanel);
