@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HelixToolkit.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Media;
@@ -33,14 +34,7 @@ namespace WpfApp2
 
         private Point3D currentPosition;
 
-       
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-
-            // Hides the cursor when the window loads
-            Cursor = Cursors.Cross;
-
-        }
+     
 
         private async void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -176,6 +170,7 @@ namespace WpfApp2
             blockClickHandler = new BlockClickHandler(viewport, cameraHandler, mapChunk);
             cameraHandler = new CameraHandlers(this, tickHandler,wrap,blockClickHandler, StartMenuStack);
             Keyboard.Focus(this);
+
         }
         public double StartNumCubeX = -10;
         public double StartNumCubeY = -10;
