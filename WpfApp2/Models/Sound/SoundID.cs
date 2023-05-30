@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Media;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
-using System.IO;
+using System.Windows.Media;
 
 namespace WpfApp2.Models.Sound
 {
@@ -13,10 +11,17 @@ namespace WpfApp2.Models.Sound
     {
         private static string soundFolderPath = "Models/Sound/";
 
-        public static SoundPlayer Click = new SoundPlayer(Path.Combine(soundFolderPath, "ButtonSound.wav"));
-        public static SoundPlayer Remove = new SoundPlayer(Path.Combine(soundFolderPath, "RemoveSound.wav"));
-        public static SoundPlayer Add = new SoundPlayer(Path.Combine(soundFolderPath, "AddSound.wav"));
-        public static SoundPlayer Walk = new SoundPlayer(Path.Combine(soundFolderPath, "Walking2.wav"));
+        public static MediaPlayer Click = CreateMediaPlayer("ButtonSound.wav");
+        public static MediaPlayer Remove = CreateMediaPlayer("RemoveSound.wav");
+        public static MediaPlayer Add = CreateMediaPlayer("AddSound.wav");
+        public static MediaPlayer Walk = CreateMediaPlayer("Walking2.wav");
+
+        private static MediaPlayer CreateMediaPlayer(string fileName)
+        {
+            string fullPath = System.IO.Path.Combine(soundFolderPath, fileName);
+            MediaPlayer mediaPlayer = new MediaPlayer();
+            mediaPlayer.Open(new Uri(fullPath, UriKind.Relative));
+            return mediaPlayer;
+        }
     }
 }
-

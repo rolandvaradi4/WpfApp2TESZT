@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Media;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using WpfApp2.Config;
 using WpfApp2.Handlers.Camera;
@@ -40,72 +42,109 @@ namespace WpfApp2
 
         }
 
-        private  async void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        private async void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            
-                cameraHandler.HandleKeyPress(e);
+            cameraHandler.HandleKeyPress(e);
             cameraHandler.HandleKeyPressExit(e);
+
             switch (e.Key)
             {
                 case Key.W:
-                    await PlaySound(SoundID.Walk);
-                    break;
                 case Key.A:
-                    await PlaySound(SoundID.Walk);
-                    break;
                 case Key.S:
-                    await PlaySound(SoundID.Walk);
-                    break;
                 case Key.D:
-                    await PlaySound(SoundID.Walk);
+                    await Task.Run(async () => await PlaySound(SoundID.Walk));
                     break;
-                
-            }
-        }
-        private async void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {          
-              await PlaySound( SoundID.Remove);  
-            }
-            if (e.RightButton == MouseButtonState.Pressed)
-            {
-               await PlaySound( SoundID.Add);
             }
         }
 
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Task.Run(async () =>
+                {
+                    do
+                    {
+                        await PlaySound(SoundID.Remove);
+                    } while (e.LeftButton == MouseButtonState.Pressed);
+                });
+            }
+            else if (e.RightButton == MouseButtonState.Pressed)
+            {
+                Task.Run(async () =>
+                {
+                    do
+                    {
+                        await PlaySound(SoundID.Add);
+                    } while (e.RightButton == MouseButtonState.Pressed);
+                });
+            }
+        }
 
         private bool soundPlaying = false;
         private bool soundPlayingClick = false;
-        private async Task PlaySound( SoundPlayer ID)
+        private MediaPlayer Walk = SoundID.Walk;
+        private MediaPlayer Remove = SoundID.Click;
+        private MediaPlayer Add = SoundID.Add;
+        bool walking = false;
+        bool remove = false;
+        bool add = false;
+        private async Task PlaySound(MediaPlayer ID)
         {
-            
-                if (!soundPlayingClick)
+            if (!soundPlayingClick)
+            {
+                soundPlayingClick = true;
+
+                await Dispatcher.InvokeAsync(() =>
                 {
-                    soundPlayingClick = true;
-                    if(ID == SoundID.Remove)
+                    if (ID == SoundID.Walk)
                     {
-                        ID.PlayLooping();
-                        await Task.Delay(1500);
+                        walking = true;
+                        Walk.SpeedRatio = 2;
+                        Walk.Play();
                     }
-                    else if( ID == SoundID.Walk)
+                    else if (ID == SoundID.Add)
                     {
-                        ID.PlayLooping();
-                        await Task.Delay(2500);
+                        add = true;
+                        Add.SpeedRatio = 1;
+                        Add.Play();
                     }
-                    else
+                    else if (ID == SoundID.Remove)
                     {
-                    ID.PlayLooping();
-                    await Task.Delay(1000);
-                    } 
-                    
+                        remove = true;
+                        Remove.SpeedRatio = 1;
+                        Remove.Play();
+                    }
+                });
 
-                    ID.Stop();
-                    soundPlayingClick = false;
-                }
-            
+                await Task.Delay(1000);
 
+                await Dispatcher.InvokeAsync(() =>
+                {
+                    if (remove == true)
+                    {
+                        Remove.Stop();
+                        remove = false;
+                    }
+                    if (add == true)
+                    {
+                        Add.Stop();
+                        add = false;
+                    }
+                    if (walking == true)
+                    {
+                        Walk.Stop();
+                        walking = false;
+                    }
+                });
+
+                soundPlayingClick = false;
+            }
         }
+
+
+
 
         public void HookUpEvents()
         {
@@ -238,6 +277,7 @@ namespace WpfApp2
 
             viewport.InvalidateVisual(); // update the viewport content
         }
+        bool start = true;
         private bool IsCameraAtMapEdge(Point3D cameraPosition, MapChunk mapChunk , Vector3D lookDirection)
         {
             double edgeThreshold = 2.0; // Adjust this value to change the threshold distance from the map's edge
@@ -265,9 +305,9 @@ namespace WpfApp2
                 }
             }
            
-            if (cameraPosition.X > maxX+2 ||cameraPosition.X < minX || cameraPosition.Y > maxY+3 || cameraPosition.Y < minY || (cameraPosition.X==0 && cameraPosition.Y==0))
+            if (cameraPosition.X > maxX+1 ||cameraPosition.X < minX || cameraPosition.Y > maxY+1 || cameraPosition.Y < minY || (cameraPosition.X==0 && cameraPosition.Y==0 && start==true))
             {
-               
+                start = false;
                return true;
             }
 

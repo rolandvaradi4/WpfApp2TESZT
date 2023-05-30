@@ -37,19 +37,12 @@ namespace WpfApp2.Handlers.Mouse
         {
             imagea = image;
         }
-        public void AddBlock(Viewport3D viewport, CameraHandlers camera, MapChunk map)
+        public async void AddBlock(Viewport3D viewport, CameraHandlers camera, MapChunk map)
         {
             Point3D Position = camera.playerCamera.Position;
-            double Target2 = (double)camera.playerCamera.LookDirection.Z;
-            if (Target2 >= 0)
-            {
-                Target2 = 4;
-            }
-            else if(Target2<0)
-            {
-                Target2 = 2;
-            }
-            Point3D Target = (camera.playerCamera.LookDirection) * Target2 + camera.playerCamera.Position;
+           
+            
+            Point3D Target = (camera.playerCamera.LookDirection) * 2 + camera.playerCamera.Position;
 
             
             ImageBrush texture = new ImageBrush(imagea);
@@ -68,7 +61,7 @@ namespace WpfApp2.Handlers.Mouse
             {
                 cubeVisual.Transform = new TranslateTransform3D(x, y, z);
                 CubeBlocks.Children.Add(cubeVisual);
-
+                await Task.Delay(1500);
             }
            
           
@@ -100,19 +93,13 @@ namespace WpfApp2.Handlers.Mouse
 
 
 
-        public void RemoveBlock(Viewport3D viewport, CameraHandlers camera, MapChunk map)
+        public async void RemoveBlock(Viewport3D viewport, CameraHandlers camera, MapChunk map)
         {
             Point3D Position = camera.playerCamera.Position;
-            double Target2 = (double)camera.playerCamera.LookDirection.Z;
-            if (Target2 >= 0)
-            {
-                Target2 = 4;
-            }
-            else if (Target2 < 0)
-            {
-                Target2 = 2;
-            }
-            Point3D Target = (camera.playerCamera.LookDirection) * Target2 + camera.playerCamera.Position;
+            
+            
+            
+            Point3D Target = (camera.playerCamera.LookDirection) * 2 + camera.playerCamera.Position;
 
 
             BitmapImage imagea = TextureID.Grass;
@@ -139,6 +126,7 @@ namespace WpfApp2.Handlers.Mouse
                 if(item.Bounds.X == cubeVisual.Bounds.X && item.Bounds.Y == cubeVisual.Bounds.Y && item.Bounds.Z== cubeVisual.Bounds.Z)
                 {
                     CubeBlocks.Children.RemoveAt(a);
+                    await Task.Delay(500);
                     break;
                 }
                 a++;
@@ -149,6 +137,7 @@ namespace WpfApp2.Handlers.Mouse
                 if (item.Bounds.X == cubeVisual.Bounds.X && item.Bounds.Y == cubeVisual.Bounds.Y && item.Bounds.Z == cubeVisual.Bounds.Z)
                 {
                     map.CubeInstances.Children.RemoveAt(a);
+                    await Task.Delay(500);
                     break;
                 }
                 a++;

@@ -37,12 +37,12 @@ namespace WpfApp2.Handlers.Camera
         public StackPanel startmenu;
         bool isJumping = false;
         int jumpCooldown;
-        public CameraHandlers(MainWindow mainWindow, TickHandler tickHandler, WrapPanel wrapPanel, BlockClickHandler blockClickHandler,StackPanel startmenu)
+        public CameraHandlers(MainWindow mainWindow, TickHandler tickHandler, WrapPanel wrapPanel, BlockClickHandler blockClickHandler, StackPanel startmenu)
         {
             this.mainWindow = mainWindow;
             this.viewport = mainWindow.viewport;
             playerCamera = Globals.PLAYER_CAMERA;
-            this.tickHandler= tickHandler;
+            this.tickHandler = tickHandler;
             tickHandler.timer.Tick += Timer_Tick;
             this.wrapPanel = wrapPanel;
             shouldUpdateCameraRotation = true;
@@ -53,17 +53,17 @@ namespace WpfApp2.Handlers.Camera
         }
 
         string StartOrResume = "Start Game";
-       
-     
+
+
         public void StartMenuStack()
         {
-            
-            
+
+
 
             Button startGameButton = new Button();
             startGameButton.Content = StartOrResume;
             startGameButton.Click += StartGameButton_Click;
-            startGameButton.Margin = new Thickness(10,200,10,10);  
+            startGameButton.Margin = new Thickness(10, 200, 10, 10);
             startGameButton.Width = 150;
             startGameButton.Height = 50;
             startGameButton.VerticalAlignment = VerticalAlignment.Center;
@@ -96,7 +96,7 @@ namespace WpfApp2.Handlers.Camera
             shouldUpdateCameraRotation = true;
             isStackPanelCreated = false;
             StartOrResume = "Resume";
-           
+
 
             startmenu.Background = null;
         }
@@ -105,7 +105,7 @@ namespace WpfApp2.Handlers.Camera
         {
             Application.Current.Shutdown();
         }
-        
+
         private bool isStackPanelCreated = false;
         public void HandleKeyPressExit(KeyEventArgs e)
         {
@@ -121,11 +121,11 @@ namespace WpfApp2.Handlers.Camera
             if (e.Key == Key.E && !isWrapPanelCreated)
             {
                 CreateWrapPanel();
-                
+
                 isWrapPanelCreated = true;
             }
         }
-        
+
 
         private void AddImageToMenu(BitmapImage image, WrapPanel wrapPanel)
         {
@@ -146,7 +146,7 @@ namespace WpfApp2.Handlers.Camera
             blockClickHandler.SetTexture(image);
             wrapPanel.Children.Clear();
             shouldUpdateCameraRotation = true;
-            isWrapPanelCreated=false;
+            isWrapPanelCreated = false;
 
 
         }
@@ -156,7 +156,7 @@ namespace WpfApp2.Handlers.Camera
             {
                 Width = 500,
                 Height = 500,
-               
+
             };
 
             BitmapImage image1 = TextureID.Grass;
@@ -168,7 +168,7 @@ namespace WpfApp2.Handlers.Camera
             BitmapImage image7 = TextureID.Ice;
             BitmapImage image8 = TextureID.Sand;
             BitmapImage image9 = TextureID.Wood;
-            AddImageToMenu(image1,newWrapPanel);
+            AddImageToMenu(image1, newWrapPanel);
             AddImageToMenu(image2, newWrapPanel);
             AddImageToMenu(image3, newWrapPanel);
             AddImageToMenu(image4, newWrapPanel);
@@ -192,7 +192,7 @@ namespace WpfApp2.Handlers.Camera
             if (!CollisionDetection())
                 playerCamera.Position += -playerCamera.UpDirection * Globals.GRAVITY_RATE;
             else
-            { 
+            {
                 isJumping = false;
                 jumpCooldown = 10;
             }
@@ -207,9 +207,9 @@ namespace WpfApp2.Handlers.Camera
             if (Keyboard.IsKeyDown(Key.Space))
             {
                 isJumping = true;
-                
+
             }
-            if (isJumping && jumpCooldown>=0)
+            if (isJumping && jumpCooldown >= 0)
             {
                 jumpCooldown--;
                 MoveCameraAsync(Key.Space);
@@ -242,7 +242,7 @@ namespace WpfApp2.Handlers.Camera
                 rotationMatrix.Rotate(new System.Windows.Media.Media3D.Quaternion(Vector3D.CrossProduct(playerCamera.UpDirection, playerCamera.LookDirection), mouseDelta.Y * Globals.CAMERA_ROTATE_SPEED));
                 // Apply the rotation matrix to the camera's LookDirection and UpDirection vectors
                 playerCamera.LookDirection = rotationMatrix.Transform(playerCamera.LookDirection);
-                //mainWindow.MousePositionTextBlock.Text = playerCamera.GetInfo().ToString();
+                mainWindow.MousePositionTextBlock.Text = playerCamera.GetInfo().ToString();
 
             }
         }
@@ -283,7 +283,7 @@ namespace WpfApp2.Handlers.Camera
                 {
                     case Key.W:
 
-                        playerCamera.Position += new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CAMERA_MOVE_SPEED;     
+                        playerCamera.Position += new Vector3D(playerCamera.LookDirection.X, playerCamera.LookDirection.Y, 0) * Globals.CAMERA_MOVE_SPEED;
                         break;
                     case Key.A:
                         playerCamera.Position -= Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
@@ -299,12 +299,12 @@ namespace WpfApp2.Handlers.Camera
                         playerCamera.Position += Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
                         playerCamera.Position += new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CAMERA_MOVE_SPEED;
                         playerCamera.Position = (Point3D)new Vector3D(playerCamera.Position.X, playerCamera.Position.Y, Math.Round(playerCamera.Position.Z));
-                      
+
                         break;
                     case Key.Space:
                         playerCamera.Position += playerCamera.UpDirection * Globals.CAMERA_MOVE_SPEED;
                         break;
-    
+
                 }
             }
         }
@@ -363,22 +363,18 @@ namespace WpfApp2.Handlers.Camera
                     return ComputeBoundingBox(corners);
                 });
 
-            // Compute the union of all bounds
-            foreach (var geometryBound in geometryBounds)
-            {
-                bounds = UnionRect3D(bounds, geometryBound);
-            }
+            // Compute the union of all bounds using Aggregate
+            bounds = geometryBounds.Aggregate(Rect3D.Union);
 
-            // Recursively compute bounds of all child ModelVisual3D objects
-            foreach (var childVisual in modelVisual.Children.OfType<ModelVisual3D>())
-            {
-                var childTransform = childVisual.Transform;
-                var childBounds = GetModelBoundsRecursive(childVisual, childTransform);
-                bounds = UnionRect3D(bounds, childBounds);
-            }
+            // Recursively compute bounds of all child ModelVisual3D objects using Aggregate
+            bounds = modelVisual.Children
+                .OfType<ModelVisual3D>()
+                .Select(childVisual => GetModelBoundsRecursive(childVisual, childVisual.Transform))
+                .Aggregate(bounds, Rect3D.Union);
 
             return bounds;
         }
+
 
         private Rect3D UnionRect3D(Rect3D rect1, Rect3D rect2)
         {
@@ -398,26 +394,16 @@ namespace WpfApp2.Handlers.Camera
         }
         private Rect3D ComputeBoundingBox(Point3D[] corners)
         {
-            double minX = double.PositiveInfinity;
-            double minY = double.PositiveInfinity;
-            double minZ = double.PositiveInfinity;
-            double maxX = double.NegativeInfinity;
-            double maxY = double.NegativeInfinity;
-            double maxZ = double.NegativeInfinity;
-
-            for (int i = 0; i < corners.Length; i++)
-            {
-                Point3D corner = corners[i];
-                minX = Math.Min(minX, corner.X);
-                minY = Math.Min(minY, corner.Y);
-                minZ = Math.Min(minZ, corner.Z);
-                maxX = Math.Max(maxX, corner.X);
-                maxY = Math.Max(maxY, corner.Y);
-                maxZ = Math.Max(maxZ, corner.Z);
-            }
+            double minX = corners.Min(corner => corner.X);
+            double minY = corners.Min(corner => corner.Y);
+            double minZ = corners.Min(corner => corner.Z);
+            double maxX = corners.Max(corner => corner.X);
+            double maxY = corners.Max(corner => corner.Y);
+            double maxZ = corners.Max(corner => corner.Z);
 
             return new Rect3D(minX, minY, minZ, maxX - minX, maxY - minY, maxZ - minZ);
         }
+
 
         private Point3D[] GetBoundingBoxCorners(Rect3D rect)
         {
