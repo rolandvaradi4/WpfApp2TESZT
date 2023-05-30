@@ -70,6 +70,7 @@ namespace WpfApp2.Handlers.Mouse
                     spotlight.InnerConeAngle = 200;
                     spotlight.OuterConeAngle = 400;
                     spotlight.Direction = new Vector3D(1, 1, 1);
+                    spotlight.Direction = new Vector3D(-1, -1, -1);
                     spotlight.Position = new Point3D(x, y, z);
                   
                     CubeBlocks.Children.Add(spotlight);

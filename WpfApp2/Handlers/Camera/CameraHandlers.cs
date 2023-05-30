@@ -37,6 +37,7 @@ namespace WpfApp2.Handlers.Camera
         public StackPanel startmenu;
         bool isJumping = false;
         int jumpCooldown;
+     
         public CameraHandlers(MainWindow mainWindow, TickHandler tickHandler, WrapPanel wrapPanel, BlockClickHandler blockClickHandler, StackPanel startmenu)
         {
             this.mainWindow = mainWindow;
@@ -49,6 +50,7 @@ namespace WpfApp2.Handlers.Camera
             this.blockClickHandler = blockClickHandler;
             this.startmenu = startmenu;
             StartMenuStack();
+           
 
         }
 
@@ -94,6 +96,7 @@ namespace WpfApp2.Handlers.Camera
             startmenu.Children.Clear();
             shouldUpdateCameraRotation = true;
             isStackPanelCreated = false;
+            mainWindow.Cursor = Cursors.Cross;
             StartOrResume = "Resume";
             startmenu.Background = null;
         }
@@ -108,6 +111,7 @@ namespace WpfApp2.Handlers.Camera
         {
             if (e.Key == Key.Escape && !isStackPanelCreated)
             {
+                mainWindow.Cursor = null;
                 StartMenuStack();
                 isStackPanelCreated = true;
             }
@@ -117,8 +121,9 @@ namespace WpfApp2.Handlers.Camera
         {
             if (e.Key == Key.E && !isWrapPanelCreated)
             {
+                mainWindow.Cursor = null ;
                 CreateWrapPanel();
-
+                
                 isWrapPanelCreated = true;
             }
         }
@@ -137,7 +142,7 @@ namespace WpfApp2.Handlers.Camera
         }
         private void Button_Click1(object sender, RoutedEventArgs e, BitmapImage image)
         {
-
+            mainWindow.Cursor = Cursors.Cross;
             blockClickHandler.SetTexture(image);
             wrapPanel.Children.Clear();
             shouldUpdateCameraRotation = true;
