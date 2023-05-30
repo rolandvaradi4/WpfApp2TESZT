@@ -53,6 +53,7 @@ namespace WpfApp2
                 case Key.A:
                 case Key.S:
                 case Key.D:
+                case Key.Space:
                     await Task.Run(async () => await PlaySound(SoundID.Walk));
                     break;
             }
@@ -100,13 +101,16 @@ namespace WpfApp2
                 {
                     if (ID == SoundID.Walk)
                     {
-                        walking = true;
+                        walking = true; 
+                        Walk.Volume = 1;
                         Walk.SpeedRatio = 2;
+                       
                         Walk.Play();
                     }
                     else if (ID == SoundID.Add)
                     {
                         add = true;
+                        Add.Volume = 0.3;
                         Add.SpeedRatio = 1;
                         Add.Play();
                     }
@@ -114,6 +118,7 @@ namespace WpfApp2
                     {
                         remove = true;
                         Remove.SpeedRatio = 1;
+                        Remove.Volume = 1;
                         Remove.Play();
                     }
                 });
@@ -142,32 +147,20 @@ namespace WpfApp2
                 soundPlayingClick = false;
             }
         }
-
-
-
-
         public void HookUpEvents()
         {
             // Gets called when the window loads, will hook up events from the proper handlers to the actions.
             tickHandler.timer.Tick += Timer_Tick;
             MouseMove += cameraHandler.GameViewport_MouseMove;
-
-
         }
         public MainWindow()
         {
             InitializeComponent();
             Initialise();
             HookUpEvents();
-
         }
-        
-
         public void Initialise()
         {
-            List<Rect3D> cubeBoundingBoxes = new List<Rect3D>();
-           
-          
             // Initialize the camera
             // Access the PLAYER_CAMERA from the Globals class
             PerspectiveCamera playerCamera = Globals.PLAYER_CAMERA;
@@ -180,18 +173,10 @@ namespace WpfApp2
             ModelVisual3D skyboxVisual = new ModelVisual3D();
             skyboxVisual.Content = skyboxModel;
             viewport.Children.Add(skyboxVisual);
-
             blockClickHandler = new BlockClickHandler(viewport, cameraHandler, mapChunk);
             cameraHandler = new CameraHandlers(this, tickHandler,wrap,blockClickHandler, StartMenuStack);
-         
-
             Keyboard.Focus(this);
         }
-       
-
-
-
-
         public double StartNumCubeX = -10;
         public double StartNumCubeY = -10;
         public int NumCubeX = 40;
@@ -257,10 +242,7 @@ namespace WpfApp2
                 blockClickHandler.RemoveBlock(viewport, cameraHandler, mapChunk);
 
                 // Remove CubeBlocks from the viewport if they are present
-
                 viewport.Children.Remove(new ModelVisual3D { Content = blockClickHandler.CubeBlocks });
-               
-
             }
             else if (Mouse.RightButton == MouseButtonState.Pressed)
             {
@@ -270,11 +252,9 @@ namespace WpfApp2
                 // Add CubeBlocks to the viewport if they are not present
                 if (!cubeBlocksPresent)
                 {
-                    viewport.Children.Add(new ModelVisual3D { Content = blockClickHandler.CubeBlocks });
-                    
+                    viewport.Children.Add(new ModelVisual3D { Content = blockClickHandler.CubeBlocks });     
                 }
             }
-
             viewport.InvalidateVisual(); // update the viewport content
         }
         bool start = true;

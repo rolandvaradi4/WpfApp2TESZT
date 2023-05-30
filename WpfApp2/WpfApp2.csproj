@@ -8,8 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Models\MainMenu.png" />
-    <None Remove="Models\MainMenuWpf.png" />
+    <None Remove="Models\MainMenuWpf2.png" />
     <None Remove="Models\skyboxBack.png" />
     <None Remove="Models\skyboxBottom.png" />
     <None Remove="Models\skyboxFront.png" />
@@ -18,7 +17,6 @@
     <None Remove="Models\skyboxTop.png" />
     <None Remove="Models\Sound\AddSound.wav" />
     <None Remove="Models\Sound\ButtonSound.wav" />
-    <None Remove="Models\Sound\RemoveSound.wav" />
     <None Remove="Models\Textures\Brick.jpg" />
     <None Remove="Models\Textures\dirt.png" />
     <None Remove="Models\Textures\grass.png" />
@@ -32,10 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Models\MainMenu.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Models\MainMenuWpf.png">
+    <Content Include="Models\MainMenuWpf2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Models\skyboxBack.png">
@@ -57,9 +52,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Models\Sound\AddSound.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Models\Sound\RemoveSound.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Models\Textures\Brick.jpg">

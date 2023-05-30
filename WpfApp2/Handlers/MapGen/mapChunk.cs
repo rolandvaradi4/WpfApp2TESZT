@@ -38,8 +38,6 @@ namespace WpfApp2.Handlers.MapGen
             }
 
         }
-
-
         public Model3DGroup CubeInstances => _cubeInstances;
     }
 }

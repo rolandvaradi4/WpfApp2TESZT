@@ -57,9 +57,6 @@ namespace WpfApp2.Handlers.Camera
 
         public void StartMenuStack()
         {
-
-
-
             Button startGameButton = new Button();
             startGameButton.Content = StartOrResume;
             startGameButton.Click += StartGameButton_Click;
@@ -71,9 +68,11 @@ namespace WpfApp2.Handlers.Camera
             BitmapImage image;
             if (StartOrResume == "Start Game")
             {
-                image = new BitmapImage(new Uri("pack://application:,,,/Models/MainMenuWpf.png", UriKind.RelativeOrAbsolute));
+                image = new BitmapImage(new Uri("pack://application:,,,/Models/MainMenuWpf2.png", UriKind.RelativeOrAbsolute));
                 ImageBrush backgroundBrush = new ImageBrush(image);
+                backgroundBrush.Stretch = Stretch.UniformToFill;
                 startmenu.Background = backgroundBrush;
+
             }
 
             Button exitButton = new Button();
@@ -96,8 +95,6 @@ namespace WpfApp2.Handlers.Camera
             shouldUpdateCameraRotation = true;
             isStackPanelCreated = false;
             StartOrResume = "Resume";
-
-
             startmenu.Background = null;
         }
 
@@ -137,8 +134,6 @@ namespace WpfApp2.Handlers.Camera
             imageControl.Stretch = System.Windows.Media.Stretch.UniformToFill;
             button.Content = imageControl;
             wrapPanel.Children.Add(button);
-
-
         }
         private void Button_Click1(object sender, RoutedEventArgs e, BitmapImage image)
         {
@@ -218,10 +213,6 @@ namespace WpfApp2.Handlers.Camera
 
         [DllImport("user32.dll")]
         static extern bool SetCursorPos(int x, int y);
-
-
-
-
         public void GameViewport_MouseMove(object sender, MouseEventArgs e)
         {
             if (shouldUpdateCameraRotation)
@@ -242,8 +233,6 @@ namespace WpfApp2.Handlers.Camera
                 rotationMatrix.Rotate(new System.Windows.Media.Media3D.Quaternion(Vector3D.CrossProduct(playerCamera.UpDirection, playerCamera.LookDirection), mouseDelta.Y * Globals.CAMERA_ROTATE_SPEED));
                 // Apply the rotation matrix to the camera's LookDirection and UpDirection vectors
                 playerCamera.LookDirection = rotationMatrix.Transform(playerCamera.LookDirection);
-                mainWindow.MousePositionTextBlock.Text = playerCamera.GetInfo().ToString();
-
             }
         }
         public async Task RotateCameraAsync(double angle, Vector3D axis, Key key)
