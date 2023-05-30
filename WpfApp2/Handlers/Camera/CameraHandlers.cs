@@ -306,22 +306,7 @@ namespace WpfApp2.Handlers.Camera
         {
             return mainWindow.viewport.Children
                 .OfType<ModelVisual3D>()
-                .SelectMany(chunks =>
-                {
-                    if (chunks.Content is Model3DGroup modelGroup)
-                    {
-                        return modelGroup.Children.OfType<GeometryModel3D>();
-                    }
-                    else if (chunks.Content is SpotLight spotlight)
-                    {
-                        
-                        return Enumerable.Empty<GeometryModel3D>();
-                    }
-                    else
-                    {
-                        return Enumerable.Empty<GeometryModel3D>();
-                    }
-                })
+                .SelectMany(chunks => ((Model3DGroup)chunks.Content).Children.OfType<GeometryModel3D>())
                 .Select(geometryModel =>
                 {
                     Transform3D modelTransform = geometryModel.Transform;

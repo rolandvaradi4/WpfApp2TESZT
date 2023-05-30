@@ -71,9 +71,8 @@ namespace WpfApp2.Handlers.Mouse
                     spotlight.OuterConeAngle = 400;
                     spotlight.Direction = new Vector3D(1, 1, 1);
                     spotlight.Position = new Point3D(x, y, z);
-                    ModelVisual3D modelVisual3D = new ModelVisual3D();
-                    modelVisual3D.Content = spotlight;
-                    viewport.Children.Add(modelVisual3D);
+                  
+                    CubeBlocks.Children.Add(spotlight);
 
                 }
 
@@ -85,9 +84,7 @@ namespace WpfApp2.Handlers.Mouse
                     spotlight.OuterConeAngle = 400;
                     spotlight.Direction = new Vector3D(1, 1, 1);
                     spotlight.Position = new Point3D(x, y, z);
-                    ModelVisual3D modelVisual3D = new ModelVisual3D();
-                    modelVisual3D.Content = spotlight;
-                    viewport.Children.Add(modelVisual3D);
+                    CubeBlocks.Children.Add(spotlight);
 
                 }
                 CubeBlocks.Children.Add(cubeVisual);
@@ -172,11 +169,32 @@ namespace WpfApp2.Handlers.Mouse
                 }
                 a++;
             }
-        
+
+            a = 0;
+            SpotLight light = new SpotLight();
+            light.Position = new Point3D(x, y, z);
+
+            foreach (var item in CubeBlocks.Children)
+            {
+                if (item is SpotLight spotlight)
+                {
+                    if (spotlight.Position.X == light.Position.X && spotlight.Position.Y == light.Position.Y && spotlight.Position.Z == light.Position.Z)
+                    {
+                        CubeBlocks.Children.RemoveAt(a);
+                        await Task.Delay(500);
+                        break;
+                    }
+                    
+                }
+                a++;
+            }
+
+
+
 
         }
 
-      
+
 
     }
 }
