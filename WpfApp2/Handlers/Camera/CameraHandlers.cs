@@ -286,8 +286,7 @@ namespace WpfApp2.Handlers.Camera
                         break;
                     case Key.A:
                         playerCamera.Position -= Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
-                        playerCamera.Position -= new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CAMERA_MOVE_SPEED;
-                        playerCamera.Position = (Point3D)new Vector3D(playerCamera.Position.X, playerCamera.Position.Y, Math.Round(playerCamera.Position.Z));
+
                         break;
                     case Key.S:
 
@@ -296,9 +295,7 @@ namespace WpfApp2.Handlers.Camera
                     case Key.D:
 
                         playerCamera.Position += Vector3D.CrossProduct(playerCamera.LookDirection, playerCamera.UpDirection) * Globals.CAMERA_MOVE_SPEED;
-                        playerCamera.Position += new Vector3D(0, 0, playerCamera.LookDirection.Z) * Globals.CAMERA_MOVE_SPEED;
-                        playerCamera.Position = (Point3D)new Vector3D(playerCamera.Position.X, playerCamera.Position.Y, Math.Round(playerCamera.Position.Z));
-
+                    
                         break;
                     case Key.Space:
                         playerCamera.Position += playerCamera.UpDirection * Globals.CAMERA_MOVE_SPEED;

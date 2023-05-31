@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp2"
         mc:Ignorable="d"
-        Title="Cube" Height="450" Width="800"   PreviewKeyDown="MainWindow_PreviewKeyDown" MouseDown="Window_MouseDown">
+        Title="CubicalCraft: The WPF Adventure" Height="450" Width="800"   PreviewKeyDown="MainWindow_PreviewKeyDown" MouseDown="Window_MouseDown">
     <Grid>
 
         <Viewport3D x:Name="viewport">
